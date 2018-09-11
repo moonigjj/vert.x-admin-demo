@@ -1,0 +1,19 @@
+{
+  "jdbcUrl": "jdbc:mysql://127.0.0.1:3306/dish?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC&autoReconnect=true&failOverReadOnly=false",
+  "jdbcUser": "root",
+  "jdbcPassword": "123456",
+  "jdbcDriver": "com.mysql.cj.jdbc.Driver",
+  "serverPort": 8086,
+
+  "domain": "https://www.",
+
+  "appId": "wxf3be59b42bd20c78",
+  "mp.secret": "28b84306def97c314c18197b7927051b",
+  "mp.notifyUrl": "",
+  "mp.token": "",
+  "mp.aesKey": "",
+
+  "pay.mchId": "",
+  "pay.mchKey": "",
+  "pay.keyPath": ""
+}
