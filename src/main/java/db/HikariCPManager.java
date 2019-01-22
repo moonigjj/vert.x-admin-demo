@@ -16,6 +16,7 @@ import io.vertx.core.json.JsonObject;
 import io.vertx.ext.asyncsql.PostgreSQLClient;
 import io.vertx.ext.sql.SQLClient;
 import io.vertx.ext.sql.SQLConnection;
+import lombok.extern.slf4j.Slf4j;
 import utils.CommonUtil;
 
 import static utils.CommonUtil.JDBC_DRIVER;
@@ -28,7 +29,7 @@ import static utils.CommonUtil.JDBC_USER;
  * @author tangyue
  * @version $Id: HikariCPManager.java, v 0.1 2018-05-11 9:22 tangyue Exp $$
  */
-
+@Slf4j
 public class HikariCPManager {
 
     private volatile static HikariCPManager INSTANCE = null;
