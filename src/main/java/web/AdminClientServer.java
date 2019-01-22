@@ -8,6 +8,7 @@ import io.vertx.core.http.HttpServer;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.CorsHandler;
+import lombok.extern.slf4j.Slf4j;
 import utils.CodeEnum;
 import utils.CommonUtil;
 import web.router.DeskRouter;
@@ -19,6 +20,7 @@ import web.router.OrderRouter;
  * @author tangyue
  * @version $Id: server.ClientServer.java, v 0.1 2018-03-05 13:51 tangyue Exp $$
  */
+@Slf4j
 public class AdminClientServer extends AbstractVerticle {
 
     private HttpServer server;
@@ -38,7 +40,7 @@ public class AdminClientServer extends AbstractVerticle {
         router.mountSubRouter("/order", OrderRouter.create());
 
         router.route().failureHandler(f -> {
-            log.error(f.failure());
+            log.error("request error: {}", f.failure());
             f.response().setStatusCode(CodeEnum.SYS_ERROR.getCode()).end(CodeEnum.SYS_ERROR.getMessage());
         });
         Integer port = config().getInteger("serverPort", 8086);
