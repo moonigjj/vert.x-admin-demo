@@ -10,7 +10,7 @@ import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import utils.StrUtil;
 
 /**
@@ -18,7 +18,7 @@ import utils.StrUtil;
  * @author tangyue
  * @version $Id: OrderService.java, v 0.1 2018-06-14 17:24 tangyue Exp $$
  */
-@Log4j2
+@Slf4j
 public class OrderService {
 
     private static HikariCPManager hikariCPM = HikariCPManager.getInstance();

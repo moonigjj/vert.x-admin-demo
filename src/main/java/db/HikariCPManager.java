@@ -13,10 +13,9 @@ import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
-import io.vertx.ext.jdbc.JDBCClient;
+import io.vertx.ext.asyncsql.PostgreSQLClient;
 import io.vertx.ext.sql.SQLClient;
 import io.vertx.ext.sql.SQLConnection;
-import lombok.extern.log4j.Log4j2;
 import utils.CommonUtil;
 
 import static utils.CommonUtil.JDBC_DRIVER;
@@ -29,11 +28,11 @@ import static utils.CommonUtil.JDBC_USER;
  * @author tangyue
  * @version $Id: HikariCPManager.java, v 0.1 2018-05-11 9:22 tangyue Exp $$
  */
-@Log4j2
+
 public class HikariCPManager {
 
     private volatile static HikariCPManager INSTANCE = null;
-    private JDBCClient client;
+    private SQLClient client;
 
     /**
      * 因为是单例，这个唯一的构造器是私有的
@@ -52,7 +51,7 @@ public class HikariCPManager {
                 .put("password", JDBC_PSWD)
                 .put("minimumIdle", vertxConfig.getInteger("minimumIdle", 2))
                 .put("maximumPoolSize", vertxConfig.getInteger("maximumPoolSize", 10));
-        this.client = JDBCClient.createShared(ctx.owner(), config, "HikariCP");
+        this.client = PostgreSQLClient.createShared(ctx.owner(), config, "HikariCP");
     }
 
     /**
@@ -68,6 +67,7 @@ public class HikariCPManager {
             throw new RuntimeException("请先初始化Constants类！");
         }
         INSTANCE = new HikariCPManager(CommonUtil.vertxContext()); //创建单例实例
+
         INSTANCE.log.info("HikariCP连接池初始化成功！");
         return INSTANCE;
     }

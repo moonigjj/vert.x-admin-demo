@@ -7,15 +7,13 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 import entity.DishFood;
-import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import service.DishService;
 import service.converter.DishFoodConverter;
 import utils.CodeEnum;
-import utils.CommonUtil;
 import utils.StrUtil;
 import web.ApiRouter;
 
@@ -24,12 +22,8 @@ import web.ApiRouter;
  * @author tangyue
  * @version $Id: DishRouter.java, v 0.1 2018-06-13 14:50 tangyue Exp $$
  */
-@Log4j2
-public class DishRouter extends ApiRouter {
-
-    private Vertx vertx = CommonUtil.vertx();
-
-    private Router router;
+@Slf4j
+public final class DishRouter extends ApiRouter {
 
     private DishService dishService;
 
@@ -39,7 +33,6 @@ public class DishRouter extends ApiRouter {
 
     private DishRouter(){
 
-        this.router = Router.router(this.vertx);
         this.router.get("/list/:merchantId").handler(this::dishListPage);
         this.router.get("/info/:foodId").handler(this::dishFoodInfo);
         this.router.post("/add").handler(this::addDishFood);

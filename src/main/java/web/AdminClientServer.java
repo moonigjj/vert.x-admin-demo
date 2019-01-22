@@ -8,7 +8,6 @@ import io.vertx.core.http.HttpServer;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.CorsHandler;
-import lombok.extern.log4j.Log4j2;
 import utils.CodeEnum;
 import utils.CommonUtil;
 import web.router.DeskRouter;
@@ -20,13 +19,12 @@ import web.router.OrderRouter;
  * @author tangyue
  * @version $Id: server.ClientServer.java, v 0.1 2018-03-05 13:51 tangyue Exp $$
  */
-@Log4j2
 public class AdminClientServer extends AbstractVerticle {
 
     private HttpServer server;
 
     @Override
-    public void start() throws Exception {
+    public void start() {
 
         initComponents();
         Router router = Router.router(vertx);

@@ -3,14 +3,12 @@
  */
 package web.router;
 
-import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import service.OrderService;
 import utils.CodeEnum;
-import utils.CommonUtil;
 import utils.StrUtil;
 import web.ApiRouter;
 
@@ -19,12 +17,8 @@ import web.ApiRouter;
  * @author tangyue
  * @version $Id: OrderRouter.java, v 0.1 2018-06-14 17:24 tangyue Exp $$
  */
-@Log4j2
-public class OrderRouter extends ApiRouter {
-
-    private Vertx vertx = CommonUtil.vertx();
-
-    private Router router;
+@Slf4j
+public final class OrderRouter extends ApiRouter {
 
     private OrderService orderService;
 
@@ -34,7 +28,6 @@ public class OrderRouter extends ApiRouter {
 
     private OrderRouter(){
 
-        this.router = Router.router(this.vertx);
         this.router.get("/list/:merchantId").handler(this::orderListPage);
         this.router.get("/info/:orderId").handler(this::dishFoodInfo);
 

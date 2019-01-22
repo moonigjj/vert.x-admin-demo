@@ -9,10 +9,13 @@ import java.util.function.Function;
 
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
+import io.vertx.core.Vertx;
 import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
+import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import utils.CodeEnum;
+import utils.CommonUtil;
 import web.model.ReturnModel;
 
 /**
@@ -22,6 +25,13 @@ import web.model.ReturnModel;
  */
 public class ApiRouter {
 
+    protected Vertx vertx = CommonUtil.vertx();
+
+    protected Router router;
+
+    protected ApiRouter() {
+        this.router = Router.router(vertx);
+    }
 
     /**
      * Validate if a user exists in the request scope.

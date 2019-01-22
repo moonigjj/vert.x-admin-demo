@@ -58,7 +58,7 @@ public final class StrUtil {
         return Base64.encodeBase64String(str.getBytes());
     }
 
-    public static String base64(String str){
+    public static String decideBase64(String str){
         if (isBlank(str)){
             return null;
         }

@@ -4,12 +4,14 @@
 package service;
 
 import db.HikariCPManager;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  *
  * @author tangyue
  * @version $Id: MerchantService.java, v 0.1 2018-07-23 17:30 tangyue Exp $$
  */
+@Slf4j
 public class MerchantService {
 
     private static HikariCPManager hikariCPM = HikariCPManager.getInstance();

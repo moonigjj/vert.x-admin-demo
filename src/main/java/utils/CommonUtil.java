@@ -3,8 +3,6 @@
  */
 package utils;
 
-import com.github.binarywang.wxpay.config.WxPayConfig;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,7 +10,6 @@ import io.vertx.core.Context;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.json.JsonObject;
-import me.chanjar.weixin.mp.util.json.WxMpGsonBuilder;
 
 /**
  *
@@ -33,9 +30,10 @@ public final class CommonUtil {
 
     private static Vertx vertx;
     private static Context vertxContext;
+    private static JsonObject config;
 
 
-    private static WxPayConfig wxPayConfig;
+
 
     public static Vertx vertx() {
         return vertx;
@@ -45,56 +43,14 @@ public final class CommonUtil {
         return vertxContext;
     }
 
+    public static JsonObject getConfig() {
+        return config;
+    }
+
     public static void init(Context vertxContext) {
         CommonUtil.vertx = vertxContext.owner();
         CommonUtil.vertxContext = vertxContext;
-        JsonObject config = vertxContext.config();
-        JDBC_URL = config.getString("jdbcUrl", "jdbc:mysql://127.0.0.1:3306/dish?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC&autoReconnect=true&failOverReadOnly=false");
-        JDBC_USER = config.getString("jdbcUser", "root");
-        JDBC_PSWD = config.getString("jdbcPassword", "123456");
-        JDBC_DRIVER = config.getString("jdbcDriver", "com.mysql.cj.jdbc.Driver");
-
-        //
-        wxPayConfig = new WxPayConfig();
-        // 微信公众号的appid
-        wxPayConfig.setAppId(config.getString("appId"));
-        // 微信支付商户号
-        wxPayConfig.setMchId(config.getString("pay.mchId"));
-        // 微信支付商户密钥
-        wxPayConfig.setMchKey(config.getString("pay.mchKey"));
-        // apiclient_cert.p12文件的绝对路径，或者如果放在项目中，请以classpath:开头指定
-        wxPayConfig.setKeyPath(config.getString("pay.keyPath"));
-    }
-
-    /**
-     * 微信公众号授权URL，scope=snsapi_userinfo，可用于获取用户信息
-     */
-    public final static String OAUTH_INFO_API = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=snsapi_userinfo#wechat_redirect";
-
-    /**
-     * 微信公众号授权URL，scope=snsapi_base，只能用于获取用户OpenID
-     */
-    public final static String OAUTH_BASE_API = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=snsapi_base#wechat_redirect";
-
-    /**
-     * 微信公众号获取OpenID的API地址
-     */
-    public static final String OPENID_API = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=%s&secret=%s&code=%s&grant_type=authorization_code";
-
-    /**
-     * 微信公众号获取用户信息的API地址
-     */
-    public static final String USERINFO_API = "https://api.weixin.qq.com/sns/userinfo?access_token=%s&openid=%s&lang=zh_CN";
-
-
-    /**
-     * 转换成json
-     * @param obj
-     * @return
-     */
-    public static String toJson(Object obj){
-
-        return WxMpGsonBuilder.create().toJson(obj);
+        config = vertxContext.config();
     }
 
     public static Set<String> getAllowedHeaders(){

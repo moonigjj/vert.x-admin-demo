@@ -6,14 +6,12 @@ package web.router;
 import java.util.Objects;
 
 import entity.Desk;
-import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import service.DeskService;
 import utils.CodeEnum;
-import utils.CommonUtil;
 import utils.StrUtil;
 import web.ApiRouter;
 
@@ -22,12 +20,9 @@ import web.ApiRouter;
  * @author tangyue
  * @version $Id: DeskRouter.java, v 0.1 2018-06-11 14:32 tangyue Exp $$
  */
-@Log4j2
-public class DeskRouter extends ApiRouter {
+@Slf4j
+public final class DeskRouter extends ApiRouter {
 
-    private Vertx vertx = CommonUtil.vertx();
-
-    private Router router;
 
     private DeskService deskService;
 
@@ -37,7 +32,6 @@ public class DeskRouter extends ApiRouter {
 
     private DeskRouter(){
 
-        this.router = Router.router(this.vertx);
         this.router.get("/list/:merchantId").handler(this::deskListPage);
         this.router.get("/info/:deskId").handler(this::deskInfo);
         this.router.post("/add").handler(this::addDesk);

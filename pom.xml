@@ -16,10 +16,8 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <java.version>1.8</java.version>
-    <vertx.version>3.5.1</vertx.version>
-    <weixin-java-tools.version>3.0.0</weixin-java-tools.version>
-    <dom4j.version>2.0.0</dom4j.version>
-    <log4j2.version>2.8.2</log4j2.version>
+    <vertx.version>3.6.2</vertx.version>
+    <weixin-java-tools.version>3.3.0</weixin-java-tools.version>
   </properties>
 
 
@@ -32,15 +30,15 @@
       <version>${vertx.version}</version>
     </dependency>
 
-    <!--<dependency>
-        <groupId>io.vertx</groupId>
-        <artifactId>vertx-web-client</artifactId>
-        <version>${vertx.version}</version>
-    </dependency>-->
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-auth-shiro</artifactId>
+      <version>${vertx.version}</version>
+    </dependency>
 
     <dependency>
       <groupId>io.vertx</groupId>
-      <artifactId>vertx-jdbc-client</artifactId>
+      <artifactId>vertx-mysql-postgresql-client</artifactId>
       <version>${vertx.version}</version>
     </dependency>
 
@@ -50,13 +48,14 @@
       <version>3.1.0</version>
     </dependency>
 
+
     <dependency>
-      <groupId>mysql</groupId>
-      <artifactId>mysql-connector-java</artifactId>
-      <version>8.0.11</version>
+      <groupId>com.github.binarywang</groupId>
+      <artifactId>weixin-java-open</artifactId>
+      <version>${weixin-java-tools.version}</version>
     </dependency>
 
-    <!-- 微信公众平台 -->
+    <!-- 微信公众号 -->
     <dependency>
       <groupId>com.github.binarywang</groupId>
       <artifactId>weixin-java-mp</artifactId>
@@ -69,64 +68,32 @@
       <version>${weixin-java-tools.version}</version>
     </dependency>
 
-    <!--<dependency>
-        <groupId>com.google.inject</groupId>
-        <artifactId>guice</artifactId>
-        <version>4.1.0</version>
-    </dependency>-->
+    <dependency>
+      <groupId>com.google.crypto.tink</groupId>
+      <artifactId>tink</artifactId>
+      <version>1.2.1</version>
+    </dependency>
+
+
 
     <!-- log4j2 日志配置-->
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-api</artifactId>
-      <version>${log4j2.version}</version>
-    </dependency>
+      <dependency>
+          <groupId>ch.qos.logback</groupId>
+          <artifactId>logback-classic</artifactId>
+          <version>1.2.3</version>
+          <scope>test</scope>
+      </dependency>
 
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-core</artifactId>
-      <version>${log4j2.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-slf4j-impl</artifactId>
-      <version>${log4j2.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-jcl</artifactId>
-      <version>${log4j2.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.logging.log4j</groupId>
-      <artifactId>log4j-jul</artifactId>
-      <version>${log4j2.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>com.lmax</groupId>
-      <artifactId>disruptor</artifactId>
-      <version>3.3.6</version>
-    </dependency>
-    <!--日志配置结束-->
-
-    <!-- dom4j -->
-    <dependency>
-      <groupId>org.dom4j</groupId>
-      <artifactId>dom4j</artifactId>
-      <version>${dom4j.version}</version>
-    </dependency>
+      <!--日志配置结束-->
 
     <!--lombok -->
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
-      <version>1.16.18</version>
+      <version>1.18.4</version>
       <scope>provided</scope>
     </dependency>
+
 
   </dependencies>
 

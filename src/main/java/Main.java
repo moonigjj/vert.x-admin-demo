@@ -12,7 +12,7 @@ import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Future;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import web.AdminClientServer;
 
 /**
@@ -20,7 +20,7 @@ import web.AdminClientServer;
  * @author tangyue
  * @version $Id: Main.java, v 0.1 2018-03-05 13:44 tangyue Exp $$
  */
-@Log4j2
+@Slf4j
 public class Main {
 
     public static void main(String[] args) {

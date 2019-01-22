@@ -14,7 +14,7 @@ import io.vertx.core.Handler;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
 import service.converter.DeskConverter;
 import utils.CodeEnum;
 import utils.StrUtil;
@@ -25,7 +25,7 @@ import web.ApiRouter;
  * @author tangyue
  * @version $Id: DeskService.java, v 0.1 2018-06-11 14:33 tangyue Exp $$
  */
-@Log4j2
+@Slf4j
 public class DeskService {
 
     private static HikariCPManager hikariCPM = HikariCPManager.getInstance();
