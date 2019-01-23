@@ -23,6 +23,11 @@
 
   <dependencies>
 
+    <!--<dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-core</artifactId>
+      <version>${vertx.version}</version>
+    </dependency>-->
     <!-- vert.x web -->
     <dependency>
       <groupId>io.vertx</groupId>
@@ -33,6 +38,12 @@
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-auth-shiro</artifactId>
+      <version>${vertx.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-sql-common</artifactId>
       <version>${vertx.version}</version>
     </dependency>
 

@@ -5,7 +5,7 @@ package service;
 
 import java.util.List;
 
-import db.HikariCPManager;
+import db.JdbcRepositoryWrapper;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonArray;
@@ -19,9 +19,7 @@ import utils.StrUtil;
  * @version $Id: OrderService.java, v 0.1 2018-06-14 17:24 tangyue Exp $$
  */
 @Slf4j
-public class OrderService {
-
-    private static HikariCPManager hikariCPM = HikariCPManager.getInstance();
+public class OrderService extends JdbcRepositoryWrapper {
 
     private static final String BASE = "id , merchant_id merchantId, order_num orderNum, user_id userId, desk_num deskNum, " +
             "buyer_name buyerName, dish_amount amount, dish_price price, pay_status payStatus, DATE_FORMAT(create_time,'%Y-%m-%d %H:%i:%s') createTime";
@@ -49,8 +47,8 @@ public class OrderService {
             jsonArray.add(params.getString("orderNum"));
         }
         sb.append(" order by create_time desc ");
-        jsonArray.add(hikariCPM.calcPage(page, limit)).add(limit);
-        hikariCPM.queryMany(jsonArray, QUERY_ALL_PAGE)
+        jsonArray.add(calcPage(page, limit)).add(limit);
+        retrieveMany(jsonArray, QUERY_ALL_PAGE)
                 .setHandler(resultHandler);
     }
 
@@ -62,7 +60,7 @@ public class OrderService {
     public void orderInfo(String orderId, Handler<AsyncResult<JsonObject>> resultHandler){
 
         JsonArray params = new JsonArray().add(orderId);
-        hikariCPM.queryOne(params, QUERY_ORDER_ID)
+        retrieveOne(params, QUERY_ORDER_ID)
                 .map(option -> option.orElse(null))
                 .setHandler(resultHandler);
     }

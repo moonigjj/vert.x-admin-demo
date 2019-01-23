@@ -4,15 +4,15 @@
 package service;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 
-import db.HikariCPManager;
+import db.JdbcRepositoryWrapper;
 import entity.Desk;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
+import io.vertx.ext.sql.ResultSet;
 import io.vertx.ext.web.RoutingContext;
 import lombok.extern.slf4j.Slf4j;
 import service.converter.DeskConverter;
@@ -26,9 +26,7 @@ import web.ApiRouter;
  * @version $Id: DeskService.java, v 0.1 2018-06-11 14:33 tangyue Exp $$
  */
 @Slf4j
-public class DeskService {
-
-    private static HikariCPManager hikariCPM = HikariCPManager.getInstance();
+public class DeskService extends JdbcRepositoryWrapper {
 
     private static final String BASE = "id , merchant_id merchantId, desk_num deskNum, url, remark, desk_status deskStatus, DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%s') updateTime";
 
@@ -53,7 +51,7 @@ public class DeskService {
      * @param params
      * @param resultHandler
      */
-    public void deskListPage(JsonObject params, int page, int limit, Handler<AsyncResult<List<JsonObject>>> resultHandler){
+    public void deskListPage(JsonObject params, int page, int limit, Handler<AsyncResult<ResultSet>> resultHandler){
 
         log.info("start desk list params: {}", params);
         JsonArray jsonArray = new JsonArray().add(params.getString("merchantId"));
@@ -63,9 +61,8 @@ public class DeskService {
             jsonArray.add(params.getString("deskNum"));
         }
         sb.append(" order by update_time desc ");
-        jsonArray.add(hikariCPM.calcPage(page, limit)).add(limit);
-        hikariCPM.queryMany(jsonArray, QUERY_ALL_PAGE)
-                .setHandler(resultHandler);
+        jsonArray.add(calcPage(page, limit)).add(limit);
+
     }
 
     /**
@@ -76,7 +73,7 @@ public class DeskService {
     public void deskInfo(String deskId, Handler<AsyncResult<JsonObject>> resultHandler){
 
         JsonArray params = new JsonArray().add(deskId);
-        hikariCPM.queryOne(params, QUERY_DESK_ID)
+        retrieveOne(params, QUERY_DESK_ID)
                 .map(option -> option.orElse(null))
                 .setHandler(resultHandler);
     }
@@ -94,11 +91,11 @@ public class DeskService {
         JsonArray jsonArray = DeskConverter.toJsonArray(desk);
         log.info("insert desk info: {}", jsonArray);
         JsonArray params = new JsonArray().add(desk.getMerchantId()).add(desk.getDeskNum());
-        hikariCPM.queryOne(params, QUERY_DESK_NUM)
+        retrieveOne(params, QUERY_DESK_NUM)
                 .setHandler(d -> {
                     if (d.succeeded()){
                         if (!d.result().isPresent()) {
-                            hikariCPM.executeNoResult(jsonArray, INSERT_DESK).setHandler(resultHandler);
+                            executeNoResult(jsonArray, INSERT_DESK, resultHandler);
                         } else {
                             ApiRouter.serviceUnavailable(context, CodeEnum.SYS_NO_DATA);
                         }
@@ -135,13 +132,13 @@ public class DeskService {
 
         if (Objects.nonNull(desk.getDeskNum())) {
             JsonArray params = new JsonArray().add(desk.getMerchantId()).add(desk.getDeskNum());
-            hikariCPM.queryOne(params, QUERY_DESK_NUM)
+            retrieveOne(params, QUERY_DESK_NUM)
                     .setHandler(d -> {
                         if (d.succeeded()) {
                             if (!d.result().isPresent()
                                     || desk.getId().equals(d.result().get().getLong("id"))){
 
-                                hikariCPM.executeNoResult(jsonArray, sb.toString()).setHandler(resultHandler);
+                                executeNoResult(jsonArray, sb.toString(), resultHandler);
                             } else {
                                 ApiRouter.serviceUnavailable(context, CodeEnum.DESK_NUM_EXIST);
                             }
@@ -152,11 +149,11 @@ public class DeskService {
         } else {
 
             JsonArray param = new JsonArray().add(desk.getId());
-            hikariCPM.queryOne(param, QUERY_DESK_ID)
+            retrieveOne(param, QUERY_DESK_ID)
                     .setHandler(d -> {
                         if (d.succeeded()) {
                             if (d.result().isPresent()) {
-                                hikariCPM.executeNoResult(jsonArray, sb.toString()).setHandler(resultHandler);
+                                executeNoResult(jsonArray, sb.toString(), resultHandler);
                             } else {
                                 ApiRouter.serviceUnavailable(context, CodeEnum.SYS_NO_DATA);
                             }
@@ -178,7 +175,6 @@ public class DeskService {
                 .add(status)
                 .add(new Date().toInstant())
                 .add(deskId);
-        hikariCPM.executeNoResult(jsonArray, UPDATE_DESK_STATUS)
-                .setHandler(resultHandler);
+        executeNoResult(jsonArray, UPDATE_DESK_STATUS, resultHandler);
     }
 }

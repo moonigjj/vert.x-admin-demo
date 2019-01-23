@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-import db.HikariCPManager;
+import db.JdbcRepositoryWrapper;
 import entity.DishFood;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
@@ -26,9 +26,7 @@ import web.ApiRouter;
  * @version $Id: DishService.java, v 0.1 2018-06-11 17:12 tangyue Exp $$
  */
 @Slf4j
-public class DishService {
-
-    private static HikariCPManager hikariCPM = HikariCPManager.getInstance();
+public class DishService extends JdbcRepositoryWrapper {
 
     private static final String BASE = "id , merchant_id merchantId, dish_name dishName, dish_price dishPrice, dish_discount_price dishDiscountPrice," +
             " dish_icon dishIcon, dish_is_takeout dishTakeout, remark, dish_status dishStatus, DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%s') updateTime";
@@ -72,8 +70,8 @@ public class DishService {
             jsonArray.add(params.getString("dishName"));
         }
         sb.append(" order by update_time desc ");
-        jsonArray.add(hikariCPM.calcPage(page, limit)).add(limit);
-        hikariCPM.queryMany(jsonArray, QUERY_ALL_PAGE)
+        jsonArray.add(calcPage(page, limit)).add(limit);
+        retrieveMany(jsonArray, QUERY_ALL_PAGE)
                 .setHandler(resultHandler);
     }
 
@@ -85,7 +83,7 @@ public class DishService {
     public void dishInfo(String dishId, Handler<AsyncResult<JsonObject>> resultHandler){
 
         JsonArray params = new JsonArray().add(dishId);
-        hikariCPM.queryOne(params, QUERY_DISH_ID)
+        retrieveOne(params, QUERY_DISH_ID)
                 .map(option -> option.orElse(null))
                 .setHandler(resultHandler);
     }
@@ -106,11 +104,11 @@ public class DishService {
         JsonArray jsonArray = DishFoodConverter.toJsonArray(food);
         log.info("insert food info: {}", jsonArray);
         JsonArray params = new JsonArray().add(food.getMerchantId()).add(food.getDishName());
-        hikariCPM.queryOne(params, QUERY_DISH_NAME)
+        retrieveOne(params, QUERY_DISH_NAME)
                 .setHandler(d -> {
                     if (d.succeeded()){
                         if (!d.result().isPresent()) {
-                            hikariCPM.executeNoResult(jsonArray, INSERT_DISH).setHandler(resultHandler);
+                            executeNoResult(jsonArray, INSERT_DISH, resultHandler);
                         } else {
                             ApiRouter.serviceUnavailable(context, CodeEnum.DISH_NAME_EXIST);
                         }
@@ -158,13 +156,13 @@ public class DishService {
 
         if (Objects.nonNull(food.getDishName())) {
             JsonArray params = new JsonArray().add(food.getMerchantId()).add(food.getDishName());
-            hikariCPM.queryOne(params, QUERY_DISH_NAME)
+            retrieveOne(params, QUERY_DISH_NAME)
                     .setHandler(d -> {
                         if (d.succeeded()) {
                             if (!d.result().isPresent()
                                     || food.getId().equals(d.result().get().getLong("id"))){
 
-                                hikariCPM.executeNoResult(jsonArray, sb.toString()).setHandler(resultHandler);
+                                executeNoResult(jsonArray, sb.toString(), resultHandler);
                             } else {
                                 ApiRouter.serviceUnavailable(context, CodeEnum.DISH_NAME_EXIST);
                             }
@@ -175,12 +173,12 @@ public class DishService {
         } else {
 
             JsonArray param = new JsonArray().add(food.getId());
-            hikariCPM.queryOne(param, QUERY_DISH_ID)
+            retrieveOne(param, QUERY_DISH_ID)
                     .setHandler(d -> {
                         if (d.succeeded() && d.result().isPresent()) {
                             if (d.result().isPresent()) {
 
-                                hikariCPM.executeNoResult(jsonArray, sb.toString()).setHandler(resultHandler);
+                                executeNoResult(jsonArray, sb.toString(), resultHandler);
                             } else {
 
                                 ApiRouter.serviceUnavailable(context, CodeEnum.SYS_NO_DATA);
@@ -206,8 +204,7 @@ public class DishService {
                 .add(status)
                 .add(new Date().toInstant())
                 .add(dishId);
-        hikariCPM.executeNoResult(jsonArray, UPDATE_DISH_STATUS)
-                .setHandler(resultHandler);
+        executeNoResult(jsonArray, UPDATE_DISH_STATUS, resultHandler);
     }
 
     /**
@@ -223,7 +220,6 @@ public class DishService {
                 .add(takeout)
                 .add(new Date().toInstant())
                 .add(dishId);
-        hikariCPM.executeNoResult(jsonArray, UPDATE_DISH_TAKEOUT)
-                .setHandler(resultHandler);
+        executeNoResult(jsonArray, UPDATE_DISH_TAKEOUT, resultHandler);
     }
 }

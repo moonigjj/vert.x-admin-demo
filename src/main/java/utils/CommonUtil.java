@@ -23,16 +23,9 @@ public final class CommonUtil {
         throw new RuntimeException("");
     }
 
-    public static String JDBC_URL;
-    public static String JDBC_USER;
-    public static String JDBC_PSWD;
-    public static String JDBC_DRIVER;
-
     private static Vertx vertx;
     private static Context vertxContext;
     private static JsonObject config;
-
-
 
 
     public static Vertx vertx() {
