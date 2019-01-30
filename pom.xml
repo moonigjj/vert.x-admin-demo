@@ -37,7 +37,7 @@
 
     <dependency>
       <groupId>io.vertx</groupId>
-      <artifactId>vertx-auth-shiro</artifactId>
+      <artifactId>vertx-auth-oauth2</artifactId>
       <version>${vertx.version}</version>
     </dependency>
 

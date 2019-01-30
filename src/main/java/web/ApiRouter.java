@@ -33,6 +33,7 @@ public class ApiRouter {
         this.router = Router.router(vertx);
     }
 
+
     /**
      * Validate if a user exists in the request scope.
      */

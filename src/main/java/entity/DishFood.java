@@ -3,6 +3,7 @@
  */
 package entity;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -16,7 +17,7 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
-public class DishFood {
+public class DishFood implements Serializable {
 
     private Long id;
 

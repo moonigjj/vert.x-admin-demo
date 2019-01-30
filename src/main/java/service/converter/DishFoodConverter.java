@@ -53,8 +53,9 @@ public class DishFoodConverter {
         }
         if (Objects.isNull(jsonObject.getValue("dishTakeout"))){
             return valid;
+        } else {
+            valid = true;
         }
-        valid = true;
         return valid;
     }
 

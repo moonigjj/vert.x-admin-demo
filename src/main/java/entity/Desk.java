@@ -3,6 +3,7 @@
  */
 package entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import lombok.Data;
@@ -15,7 +16,7 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @NoArgsConstructor
-public class Desk {
+public class Desk implements Serializable {
 
     private Long id;
 
