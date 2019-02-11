@@ -35,7 +35,8 @@ public class DeskService extends JdbcRepositoryWrapper {
 
     private static final String QUERY_DESK_ID = "SELECT "+ BASE +" FROM dish_desk where id = ?";
 
-    private static final String QUERY_DESK_NUM = "SELECT "+ BASE +" FROM dish_desk where merchant_id = ? and desk_num = ?";
+    private static final String QUERY_DESK_NUM = "SELECT "+ BASE +" FROM dish_desk " +
+            "where merchant_id = ? and desk_num = ?";
 
     private static final String INSERT_DESK = "INSERT INTO dish_desk " +
             "(merchant_id, desk_num, url, remark, desk_status, create_time, update_time) " +
@@ -43,7 +44,7 @@ public class DeskService extends JdbcRepositoryWrapper {
 
     private static final String UPDATE_DESK = "UPDATE dish_desk SET ";
 
-    private static final String UPDATE_DESK_STATUS = "UPDATE dish_desk SET " +
+    private static final String UPDATE_DESK_STATUS = UPDATE_DESK +
             "desk_status = ?, update_time = ? where id = ?";
 
     /**

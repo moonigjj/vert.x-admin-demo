@@ -16,4 +16,5 @@ public class MerchantService extends JdbcRepositoryWrapper {
 
     private static final String BASE = "id , mer_name merchantName, nation, province, city, address," +
             " mer_dec dec, mer_phone phone, mer_url url, DATE_FORMAT(mer_begin_time,'%Y-%m-%d') beginTime";
+
 }

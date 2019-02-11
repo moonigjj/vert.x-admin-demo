@@ -13,4 +13,21 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class PermissionService extends JdbcRepositoryWrapper {
+
+    private static final String BASE = " id, name, remark, create_time ";
+
+    private static final String QUERY_All_PAGE = "SELECT" + BASE + "FROM SYS_PERMISSION " +
+            "order by id LIMIT ?, ?";
+
+    private static final String QUERY_PERMISSION_ID = "SELECT" + BASE + "FROM SYS_PERMISSION " +
+            "where id = ?";
+
+    private static final String QUERY_PERMISSION_NAME = "SELECT" + BASE + "FROM SYS_PERMISSION " +
+            "where name = ? limit 1";
+
+    private static final String INSERT_PERMISSION = "INSERT INTO SYS_PERMISSION " +
+            "(name, remark, create_time) " +
+            "VALUES (?, ?, ?)";
+
+    private static final String UPDATE_PERMISSION = "UPDATE SYS_PERMISSION SET ";
 }
