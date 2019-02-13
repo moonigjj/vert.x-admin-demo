@@ -16,7 +16,7 @@ public class UserService extends JdbcRepositoryWrapper {
 
     private static final String BASE = " id, user_name, real_name, nick_name, pwd, salt, org_id, open_id, union_id, status, online, del_flag, create_time, update_time ";
 
-    private static final String QUERY_All_PAGE = "SELECT" + BASE + "FROM SYS_USER " +
+    private static final String QUERY_ALL_PAGE = "SELECT" + BASE + "FROM SYS_USER " +
             "where org_id = ? order by id LIMIT ?, ?";
 
     private static final String QUERY_USER_ID = "SELECT" + BASE + "FROM SYS_USER " +

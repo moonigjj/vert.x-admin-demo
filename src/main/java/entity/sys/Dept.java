@@ -26,9 +26,9 @@ public class Dept implements Serializable {
 
     private String name;
 
-    private Integer level;
+    private Integer level = 0;
 
-    private String remark;
+    private String remark = "";
 
     private Integer delFlag;
 

@@ -24,9 +24,9 @@ public class Desk implements Serializable {
 
     private String deskNum;
 
-    private String url;
+    private String url = "";
 
-    private String remark;
+    private String remark = "";
 
     private Integer deskStatus;
 

@@ -16,7 +16,7 @@ public class OrgService extends JdbcRepositoryWrapper {
 
     private static final String BASE = " id, parent_id, code, name, address, contact, contact_number, del_flag, create_time, update_time ";
 
-    private static final String QUERY_All_PAGE = "SELECT" + BASE + "FROM SYS_ORG " +
+    private static final String QUERY_ALL_PAGE = "SELECT" + BASE + "FROM SYS_ORG " +
             "order by id LIMIT ?, ?";
 
     private static final String QUERY_ORG_ID = "SELECT" + BASE + "FROM SYS_ORG " +

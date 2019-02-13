@@ -16,6 +16,7 @@ public enum CodeEnum {
     SYS_NO_DATA(400, "数据不存在"),
 
     DESK_NUM_EXIST(400, "餐号已存在"),
+    DEPT_NUM_EXIST(400, "部门已存在"),
     DISH_NAME_EXIST(400, "菜品已存在")
     ;
 

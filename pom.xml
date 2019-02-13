@@ -23,11 +23,7 @@
 
   <dependencies>
 
-    <!--<dependency>
-      <groupId>io.vertx</groupId>
-      <artifactId>vertx-core</artifactId>
-      <version>${vertx.version}</version>
-    </dependency>-->
+
     <!-- vert.x web -->
     <dependency>
       <groupId>io.vertx</groupId>
@@ -57,6 +53,12 @@
       <groupId>com.zaxxer</groupId>
       <artifactId>HikariCP</artifactId>
       <version>3.1.0</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.hibernate</groupId>
+      <artifactId>hibernate-validator</artifactId>
+      <version>6.0.14.Final</version>
     </dependency>
 
 

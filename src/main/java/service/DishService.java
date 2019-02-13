@@ -31,8 +31,7 @@ public class DishService extends JdbcRepositoryWrapper {
     private static final String BASE = "id , merchant_id merchantId, dish_name dishName, dish_price dishPrice, dish_discount_price dishDiscountPrice," +
             " dish_icon dishIcon, dish_is_takeout dishTakeout, remark, dish_status dishStatus, DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%s') updateTime";
 
-    private static final String QUERY_ALL_PAGE = "SELECT "+ BASE +" FROM dish_food " +
-            "where merchant_id = ? LIMIT ?, ?";
+    private static final String QUERY_ALL_PAGE = "SELECT "+ BASE +" FROM dish_food ";
 
     private static final String QUERY_DISH_ID = "SELECT "+ BASE +" FROM dish_food where id = ?";
 
@@ -57,10 +56,10 @@ public class DishService extends JdbcRepositoryWrapper {
      * 菜品列表
      * @param params
      * @param page
-     * @param limit
+     * @param size
      * @param resultHandler
      */
-    public void dishListPage(JsonObject params, int page, int limit, Handler<AsyncResult<List<JsonObject>>> resultHandler){
+    public void dishListPage(JsonObject params, int page, int size, Handler<AsyncResult<List<JsonObject>>> resultHandler){
 
         log.info("start dish list params: {}", params);
         JsonArray jsonArray = new JsonArray().add(params.getString("merchantId"));
@@ -69,9 +68,9 @@ public class DishService extends JdbcRepositoryWrapper {
             sb.append(" and dish_name = ?");
             jsonArray.add(params.getString("dishName"));
         }
-        sb.append(" order by update_time desc ");
-        jsonArray.add(calcPage(page, limit)).add(limit);
-        retrieveMany(jsonArray, QUERY_ALL_PAGE)
+        sb.append(" order by update_time desc limit ?, ? ");
+        jsonArray.add(calcPage(page, size)).add(size);
+        retrieveMany(jsonArray, sb.toString())
                 .setHandler(resultHandler);
     }
 

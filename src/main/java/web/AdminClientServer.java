@@ -55,6 +55,7 @@ public class AdminClientServer extends AbstractVerticle {
         this.server.close(res -> log.info("HTTP服务器关闭" + (res.succeeded()?"成功":"失败")));
     }
 
+    // 初始化
     private void initComponents(){
         CommonUtil.init(context);
         HikariCPManager.init();

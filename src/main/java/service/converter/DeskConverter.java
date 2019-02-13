@@ -21,9 +21,9 @@ public class DeskConverter {
             return jsonArray;
         }
         jsonArray.add(desk.getMerchantId())
-                .add(desk.getDeskNum() == null ? "" : desk.getDeskNum())
-                .add(desk.getUrl() == null ? "" : desk.getUrl())
-                .add(desk.getRemark() == null ? "" : desk.getRemark())
+                .add(desk.getDeskNum())
+                .add(desk.getUrl())
+                .add(desk.getRemark())
                 .add(desk.getDeskStatus())
                 .add(desk.getCreateTime().toInstant())
                 .add(desk.getUpdateTime().toInstant());

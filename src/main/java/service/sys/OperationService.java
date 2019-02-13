@@ -16,7 +16,7 @@ public class OperationService extends JdbcRepositoryWrapper {
 
     private static final String BASE = " id, name, operation, create_time ";
 
-    private static final String QUERY_All_PAGE = "SELECT" + BASE + "FROM SYS_OPERATION " +
+    private static final String QUERY_ALL_PAGE = "SELECT" + BASE + "FROM SYS_OPERATION " +
             "order by id LIMIT ?, ?";
 
     private static final String QUERY_OPERATIONMENU_ID = "SELECT" + BASE + "FROM SYS_OPERATION " +

@@ -4,6 +4,7 @@
 package service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 import db.JdbcRepositoryWrapper;
@@ -12,7 +13,6 @@ import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
-import io.vertx.ext.sql.ResultSet;
 import io.vertx.ext.web.RoutingContext;
 import lombok.extern.slf4j.Slf4j;
 import service.converter.DeskConverter;
@@ -30,8 +30,7 @@ public class DeskService extends JdbcRepositoryWrapper {
 
     private static final String BASE = "id , merchant_id merchantId, desk_num deskNum, url, remark, desk_status deskStatus, DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%s') updateTime";
 
-    private static final String QUERY_ALL_PAGE = "SELECT "+ BASE +" FROM dish_desk " +
-            "where merchant_id = ? LIMIT ?, ?";
+    private static final String QUERY_ALL_PAGE = "SELECT "+ BASE +" FROM dish_desk ";
 
     private static final String QUERY_DESK_ID = "SELECT "+ BASE +" FROM dish_desk where id = ?";
 
@@ -52,7 +51,7 @@ public class DeskService extends JdbcRepositoryWrapper {
      * @param params
      * @param resultHandler
      */
-    public void deskListPage(JsonObject params, int page, int limit, Handler<AsyncResult<ResultSet>> resultHandler){
+    public void deskListPage(JsonObject params, int page, int size, Handler<AsyncResult<List<JsonObject>>> resultHandler){
 
         log.info("start desk list params: {}", params);
         JsonArray jsonArray = new JsonArray().add(params.getString("merchantId"));
@@ -61,8 +60,10 @@ public class DeskService extends JdbcRepositoryWrapper {
             sb.append(" and desk_num = ?");
             jsonArray.add(params.getString("deskNum"));
         }
-        sb.append(" order by update_time desc ");
-        jsonArray.add(calcPage(page, limit)).add(limit);
+        sb.append(" order by update_time desc limit ?, ?");
+        jsonArray.add(calcPage(page, size)).add(size);
+        retrieveMany(jsonArray, sb.toString())
+                .setHandler(resultHandler);
 
     }
 

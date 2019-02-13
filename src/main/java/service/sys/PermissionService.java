@@ -16,7 +16,7 @@ public class PermissionService extends JdbcRepositoryWrapper {
 
     private static final String BASE = " id, name, remark, create_time ";
 
-    private static final String QUERY_All_PAGE = "SELECT" + BASE + "FROM SYS_PERMISSION " +
+    private static final String QUERY_ALL_PAGE = "SELECT" + BASE + "FROM SYS_PERMISSION " +
             "order by id LIMIT ?, ?";
 
     private static final String QUERY_PERMISSION_ID = "SELECT" + BASE + "FROM SYS_PERMISSION " +

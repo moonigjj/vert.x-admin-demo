@@ -16,7 +16,7 @@ public class RoleService extends JdbcRepositoryWrapper {
 
     private static final String BASE = " id, parent_id, org_id, name, remark, del_flag, create_time, update_time ";
 
-    private static final String QUERY_All_PAGE = "SELECT" + BASE + "FROM SYS_ROLE " +
+    private static final String QUERY_ALL_PAGE = "SELECT" + BASE + "FROM SYS_ROLE " +
             "where org_id = ? order by id LIMIT ?, ?";
 
     private static final String QUERY_ROLE_ID = "SELECT" + BASE + "FROM SYS_ROLE " +

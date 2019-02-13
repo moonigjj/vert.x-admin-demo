@@ -25,10 +25,10 @@ public class DishFoodConverter {
         jsonArray.add(food.getMerchantId())
                 .add(food.getDishName())
                 .add(food.getDishPrice().doubleValue())
-                .add(food.getDishDiscountPrice() == null ? 0 : food.getDishDiscountPrice().doubleValue())
+                .add(food.getDishDiscountPrice())
                 .add(food.getDishIcon())
                 .add(food.getDishTakeout())
-                .add(food.getRemark() == null ? "" : food.getRemark())
+                .add(food.getRemark())
                 .add(food.getDishStatus())
                 .add(food.getCreateTime().toInstant())
                 .add(food.getUpdateTime().toInstant());

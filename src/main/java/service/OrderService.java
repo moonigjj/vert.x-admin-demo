@@ -24,8 +24,7 @@ public class OrderService extends JdbcRepositoryWrapper {
     private static final String BASE = "id , merchant_id merchantId, order_num orderNum, user_id userId, desk_num deskNum, " +
             "buyer_name buyerName, dish_amount amount, dish_price price, pay_status payStatus, DATE_FORMAT(create_time,'%Y-%m-%d %H:%i:%s') createTime";
 
-    private static final String QUERY_ALL_PAGE = "SELECT "+ BASE +" FROM dish_order " +
-            "where merchant_id = ? LIMIT ?, ?";
+    private static final String QUERY_ALL_PAGE = "SELECT "+ BASE +" FROM dish_order ";
 
     private static final String QUERY_ORDER_ID = "SELECT "+ BASE +" FROM dish_order where id = ?";
 
@@ -34,10 +33,10 @@ public class OrderService extends JdbcRepositoryWrapper {
      * 订单列表
      * @param params
      * @param page
-     * @param limit
+     * @param size
      * @param resultHandler
      */
-    public void orderListPage(JsonObject params, int page, int limit, Handler<AsyncResult<List<JsonObject>>> resultHandler){
+    public void orderListPage(JsonObject params, int page, int size, Handler<AsyncResult<List<JsonObject>>> resultHandler){
 
         log.info("start dish list params: {}", params);
         JsonArray jsonArray = new JsonArray().add(params.getString("merchantId"));
@@ -46,9 +45,9 @@ public class OrderService extends JdbcRepositoryWrapper {
             sb.append(" and orderNum = ?");
             jsonArray.add(params.getString("orderNum"));
         }
-        sb.append(" order by create_time desc ");
-        jsonArray.add(calcPage(page, limit)).add(limit);
-        retrieveMany(jsonArray, QUERY_ALL_PAGE)
+        sb.append(" order by create_time desc limit ?, ?");
+        jsonArray.add(calcPage(page, size)).add(size);
+        retrieveMany(jsonArray, sb.toString())
                 .setHandler(resultHandler);
     }
 
