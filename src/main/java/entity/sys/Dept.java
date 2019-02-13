@@ -20,7 +20,7 @@ public class Dept implements Serializable {
 
     private Long id;
 
-    private Long parentId;
+    private Long parentId = 0L;
 
     private Long orgId;
 

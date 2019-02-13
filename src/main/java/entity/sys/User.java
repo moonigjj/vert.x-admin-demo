@@ -24,23 +24,23 @@ public class User implements Serializable {
 
     private String userName;
 
-    private String realName;
+    private String realName = "";
 
-    private String nickName;
+    private String nickName = "";
 
     private String pwd;
 
     private String salt;
 
-    private String openId;
+    private String openId = "";
 
-    private String unionId;
+    private String unionId = "";
 
-    private Integer status;
+    private Integer status = 1;
 
-    private Integer online;
+    private Integer online = 0;
 
-    private Integer delFlag;
+    private Integer delFlag = 0;
 
     private Date createTime;
 

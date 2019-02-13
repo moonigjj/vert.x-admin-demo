@@ -28,7 +28,7 @@ public class Desk implements Serializable {
 
     private String remark = "";
 
-    private Integer deskStatus;
+    private Integer deskStatus = 0;
 
     private Date createTime;
 

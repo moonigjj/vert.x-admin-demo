@@ -20,19 +20,19 @@ public class Org implements Serializable {
 
     private Long id;
 
-    private Long parentId;
+    private Long parentId = 0L;
 
     private String code;
 
     private String name;
 
-    private String address;
+    private String address = "";
 
-    private String contact;
+    private String contact = "";
 
-    private String contactName;
+    private String contactName = "";
 
-    private Integer delFlag;
+    private Integer delFlag = 0;
 
     private Date createTime;
 

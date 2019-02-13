@@ -20,15 +20,15 @@ public class Role implements Serializable {
 
     private Long id;
 
-    private Long parentId;
+    private Long parentId = 0L;
 
     private Long orgId;
 
     private String name;
 
-    private String remark;
+    private String remark = "";
 
-    private Integer delFlag;
+    private Integer delFlag = 0;
 
     private Date createTime;
 

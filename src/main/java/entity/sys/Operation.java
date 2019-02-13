@@ -22,7 +22,7 @@ public class Operation implements Serializable {
 
     private String name;
 
-    private String operation;
+    private String operation = "";
 
     private Date createTime;
 }

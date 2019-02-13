@@ -29,13 +29,13 @@ public class DishFood implements Serializable {
 
     private BigDecimal dishDiscountPrice = new BigDecimal("0");
 
-    private String dishIcon;
+    private String dishIcon = "";
 
     private Integer dishTakeout;
 
     private String remark = "";
 
-    private Integer dishStatus;
+    private Integer dishStatus = 0;
 
     private Date createTime;
 

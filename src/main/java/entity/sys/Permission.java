@@ -22,7 +22,7 @@ public class Permission implements Serializable {
 
     private String name;
 
-    private String remark;
+    private String remark = "";
 
     private Date createTime;
 }

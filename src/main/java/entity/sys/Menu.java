@@ -20,19 +20,19 @@ public class Menu implements Serializable {
 
     private Long id;
 
-    private Long parentId;
+    private Long parentId = 0L;
 
     private String name;
 
-    private String url;
+    private String url = "";
 
-    private String icon;
+    private String icon = "";
 
-    private Integer sortNum;
+    private Integer sortNum = 0;
 
-    private Integer status;
+    private Integer status = 0;
 
-    private String remark;
+    private String remark = "";
 
     private Date createTime;
 
