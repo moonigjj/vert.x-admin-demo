@@ -18,6 +18,8 @@ public enum CodeEnum {
     DESK_NUM_EXIST(400, "餐号已存在"),
     DEPT_NUM_EXIST(400, "部门已存在"),
     MENU_NUM_EXIST(400, "菜单已存在"),
+    OPERATION_NUM_EXIST(400, "操作已存在"),
+    PERMISSION_NUM_EXIST(400, "权限已存在"),
     DISH_NAME_EXIST(400, "菜品已存在")
     ;
 
