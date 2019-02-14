@@ -14,6 +14,13 @@ import utils.CommonUtil;
 import web.router.DeskRouter;
 import web.router.DishRouter;
 import web.router.OrderRouter;
+import web.router.sys.DeptRouter;
+import web.router.sys.MenuRouter;
+import web.router.sys.OperationRouter;
+import web.router.sys.OrgRouter;
+import web.router.sys.PermissionRouter;
+import web.router.sys.RoleRouter;
+import web.router.sys.UserRouter;
 
 /**
  * 客户端程序
@@ -38,6 +45,14 @@ public class AdminClientServer extends AbstractVerticle {
         router.mountSubRouter("/desk", DeskRouter.create());
         router.mountSubRouter("/dish", DishRouter.create());
         router.mountSubRouter("/order", OrderRouter.create());
+
+        router.mountSubRouter("/dept", DeptRouter.create());
+        router.mountSubRouter("/menu", MenuRouter.create());
+        router.mountSubRouter("/operation", OperationRouter.create());
+        router.mountSubRouter("/org", OrgRouter.create());
+        router.mountSubRouter("/permission", PermissionRouter.create());
+        router.mountSubRouter("/role", RoleRouter.create());
+        router.mountSubRouter("/user", UserRouter.create());
 
         router.route().failureHandler(f -> {
             log.error("request error: {}", f.failure());
