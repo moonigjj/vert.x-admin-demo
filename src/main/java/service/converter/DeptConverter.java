@@ -13,7 +13,7 @@ import io.vertx.core.json.JsonArray;
  * @author tangyue
  * @version $Id: DeptConverter.java, v 0.1 2019-02-13 14:48 tangyue Exp $$
  */
-public class DeptConverter {
+public final class DeptConverter {
 
     public static JsonArray toJsonArray(Dept dept) {
         JsonArray jsonArray = new JsonArray();

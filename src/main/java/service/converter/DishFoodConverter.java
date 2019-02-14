@@ -14,7 +14,7 @@ import io.vertx.core.json.JsonObject;
  * @author tangyue
  * @version $Id: DishFoodConverter.java, v 0.1 2018-06-14 10:34 tangyue Exp $$
  */
-public class DishFoodConverter {
+public final class DishFoodConverter {
 
     public static JsonArray toJsonArray(DishFood food){
         JsonArray jsonArray = new JsonArray();

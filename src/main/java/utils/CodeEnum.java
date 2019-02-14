@@ -21,6 +21,9 @@ public enum CodeEnum {
     OPERATION_NUM_EXIST(400, "操作已存在"),
     PERMISSION_NUM_EXIST(400, "权限已存在"),
     RESOURCE_NUM_EXIST(400, "资源已存在"),
+    ORG_NUM_EXIST(400, "机构已存在"),
+    ROLE_NUM_EXIST(400, "角色已存在"),
+    USER_NUM_EXIST(400, "用户名已存在"),
     DISH_NAME_EXIST(400, "菜品已存在")
     ;
 

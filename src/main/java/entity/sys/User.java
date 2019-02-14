@@ -28,6 +28,8 @@ public class User implements Serializable {
 
     private String nickName = "";
 
+    private String avatar = "";
+
     private String pwd;
 
     private String salt;

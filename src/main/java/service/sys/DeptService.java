@@ -90,7 +90,6 @@ public class DeptService extends JdbcRepositoryWrapper {
 
         log.info("start add dept: {}", dept);
         Date now = new Date();
-        dept.setDelFlag(0);
         dept.setCreateTime(now);
         dept.setUpdateTime(now);
         JsonArray jsonArray = DeptConverter.toJsonArray(dept);

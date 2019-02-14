@@ -13,7 +13,7 @@ import io.vertx.core.json.JsonArray;
  * @author tangyue
  * @version $Id: DeskConverter.java, v 0.1 2018-06-11 15:54 tangyue Exp $$
  */
-public class DeskConverter {
+public final class DeskConverter {
 
     public static JsonArray toJsonArray(Desk desk){
         JsonArray jsonArray = new JsonArray();

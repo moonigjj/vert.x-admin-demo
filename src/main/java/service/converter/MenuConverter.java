@@ -13,7 +13,7 @@ import io.vertx.core.json.JsonArray;
  * @author tangyue
  * @version $Id: menuConverter.java, v 0.1 2019-02-13 14:48 tangyue Exp $$
  */
-public class MenuConverter {
+public final class MenuConverter {
 
     public static JsonArray toJsonArray(Menu menu) {
         JsonArray jsonArray = new JsonArray();
