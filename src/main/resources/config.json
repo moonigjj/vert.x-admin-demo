@@ -1,7 +1,7 @@
 {
-  "jdbcUrl": "jdbc:postgresql://127.0.0.1:3306/dish?useUnicode=true&characterEncoding=UTF-8&useSSL=false&serverTimezone=UTC&autoReconnect=true&failOverReadOnly=false",
-  "jdbcUser": "root",
-  "jdbcPassword": "123456",
+  "jdbcUrl": "jdbc:postgresql://127.0.0.1:5432/dish",
+  "jdbcUser": "postgres",
+  "jdbcPassword": "gs2019",
   "jdbcDriver": "org.postgresql.Driver",
   "serverPort": 8086,
 
