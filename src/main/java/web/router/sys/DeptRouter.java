@@ -134,7 +134,7 @@ public final class DeptRouter extends ApiRouter {
         JsonObject jsonObject = context.getBodyAsJson();
         log.info("update dept status: {}", jsonObject);
         Integer del = jsonObject.getInteger("del");
-        Integer deptId = jsonObject.getInteger("deptId");
+        Long deptId = jsonObject.getLong("deptId");
         if (Objects.isNull(del) || Objects.isNull(deptId)){
 
             serviceUnavailable(context, CodeEnum.SYS_REQUEST);

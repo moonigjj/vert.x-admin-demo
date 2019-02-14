@@ -172,7 +172,7 @@ public class RoleService extends JdbcRepositoryWrapper {
     /**
      * 更新角色状态
      */
-    public void updateRoleDel(Integer del, Integer roleId, Handler<AsyncResult<Void>> resultHandler){
+    public void updateRoleDel(Integer del, Long roleId, Handler<AsyncResult<Void>> resultHandler){
 
         log.info("update role: {}, status: {}",roleId, del);
         JsonArray jsonArray = new JsonArray()

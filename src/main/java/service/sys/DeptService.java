@@ -176,7 +176,7 @@ public class DeptService extends JdbcRepositoryWrapper {
     /**
      * 更新部门状态
      */
-    public void updateDeptDel(Integer del, Integer deptId, Handler<AsyncResult<Void>> resultHandler){
+    public void updateDeptDel(Integer del, Long deptId, Handler<AsyncResult<Void>> resultHandler){
 
         log.info("update dept: {}, status: {}",deptId, del);
         JsonArray jsonArray = new JsonArray()

@@ -204,7 +204,7 @@ public class UserService extends JdbcRepositoryWrapper {
     /**
      * 更新角色状态
      */
-    public void updateUserDel(Integer del, Integer userId, Handler<AsyncResult<Void>> resultHandler){
+    public void updateUserDel(Integer del, Long userId, Handler<AsyncResult<Void>> resultHandler){
 
         log.info("update user: {}, status: {}",userId, del);
         JsonArray jsonArray = new JsonArray()

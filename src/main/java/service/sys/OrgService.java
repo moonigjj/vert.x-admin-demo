@@ -183,7 +183,7 @@ public class OrgService extends JdbcRepositoryWrapper {
     /**
      * 更新机构状态
      */
-    public void updateOrgDel(Integer del, Integer orgId, Handler<AsyncResult<Void>> resultHandler){
+    public void updateOrgDel(Integer del, Long orgId, Handler<AsyncResult<Void>> resultHandler){
 
         log.info("update org: {}, status: {}",orgId, del);
         JsonArray jsonArray = new JsonArray()
