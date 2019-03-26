@@ -6,6 +6,8 @@ package entity.sys;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.validation.constraints.NotBlank;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -20,6 +22,7 @@ public class Permission implements Serializable {
 
     private Long id;
 
+    @NotBlank
     private String name;
 
     private String remark = "";

@@ -33,16 +33,28 @@
 
     <dependency>
       <groupId>io.vertx</groupId>
-      <artifactId>vertx-auth-oauth2</artifactId>
+      <artifactId>vertx-config</artifactId>
       <version>${vertx.version}</version>
     </dependency>
 
     <dependency>
       <groupId>io.vertx</groupId>
-      <artifactId>vertx-sql-common</artifactId>
+      <artifactId>vertx-auth-oauth2</artifactId>
       <version>${vertx.version}</version>
     </dependency>
 
+    <!--<dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-sql-common</artifactId>
+      <version>${vertx.version}</version>
+    </dependency>
+-->
+    <!--<dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-jdbc-client</artifactId>
+      <version>${vertx.version}</version>
+    </dependency>
+-->
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-mysql-postgresql-client</artifactId>
@@ -60,6 +72,13 @@
       <artifactId>hibernate-validator</artifactId>
       <version>6.0.14.Final</version>
     </dependency>
+
+    <dependency>
+      <groupId>org.glassfish</groupId>
+      <artifactId>javax.el</artifactId>
+      <version>3.0.0</version>
+    </dependency>
+
 
 
     <dependency>

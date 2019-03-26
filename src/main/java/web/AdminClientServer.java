@@ -60,7 +60,7 @@ public class AdminClientServer extends AbstractVerticle {
         });
         Integer port = config().getInteger("serverPort", 8086);
         this.server = vertx.createHttpServer();
-        this.server.requestHandler(router :: accept).listen(port);
+        this.server.requestHandler(router).listen(port);
     }
 
     @Override

@@ -1,8 +1,9 @@
 {
-  "jdbcUrl": "jdbc:postgresql://127.0.0.1:5432/dish",
-  "jdbcUser": "postgres",
-  "jdbcPassword": "gs2019",
-  "jdbcDriver": "org.postgresql.Driver",
+  "jdbcUrl": "jdbc:postgresql://localhost:5432/auth",
+  "username": "postgres",
+  "password": "gs2019",
+  "driverClassName": "org.postgresql.Driver",
+  "maximumPoolSize": "30",
   "serverPort": 8086,
 
   "domain": "https://www.",

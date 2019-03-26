@@ -11,8 +11,6 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 
-import exception.MEExeception;
-
 /**
  * 使用hibernate的注解来进行验证
  * @author tangyue
@@ -29,11 +27,13 @@ public final class ValidationUtils {
      * @param obj
      * @param <T>
      */
-    public static <T> void  validate(T obj) {
+    public static <T> String validate(T obj) {
         Set<ConstraintViolation<T>> constraintViolations = validator.validate(obj);
         // 抛出检验异常
         if (constraintViolations.size() > 0) {
-            throw new MEExeception(constraintViolations.iterator().next().getMessage());
+            return constraintViolations.iterator().next().getMessage();
+        } else {
+            return null;
         }
     }
 }

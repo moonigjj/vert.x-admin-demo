@@ -99,13 +99,7 @@ public class ApiRouter {
                 if (res == null) {
                     serviceUnavailable(context, CodeEnum.SYS_REQUEST);
                 } else {
-
-                    ReturnModel returnModel = new ReturnModel();
-                    returnModel.setSuc(true);
-                    returnModel.setResult(res);
-                    context.response()
-                            .putHeader("content-type", "application/json")
-                            .end(Json.encodePrettily(returnModel));
+                    serviceAvailable(context, res);
                 }
             } else {
                 serviceUnavailable(context, CodeEnum.SYS_ERROR);
@@ -145,8 +139,12 @@ public class ApiRouter {
         ReturnModel returnModel = new ReturnModel();
         returnModel.setSuc(false);
         returnModel.setReason(cause.getMessage());
-        context.response().setStatusCode(cause.getCode())
+        context.response()
                 .putHeader("content-type", "application/json")
                 .end(Json.encodePrettily(returnModel));
+    }
+
+    public static void serviceUnavailable(RoutingContext context, String message) {
+        serviceUnavailable(context, message);
     }
 }

@@ -33,7 +33,7 @@ public class Main {
     public static class ServiceLauncher extends AbstractVerticle {
 
         @Override
-        public void start(Future<Void> startFuture) throws Exception {
+        public void start(Future<Void> startFuture) {
 
             DeploymentOptions clientOpts = new DeploymentOptions().setWorkerPoolSize(4);
             List<Future> futures = Lists.newArrayList();

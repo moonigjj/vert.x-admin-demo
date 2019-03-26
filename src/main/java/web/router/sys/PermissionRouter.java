@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import service.sys.PermissionService;
 import utils.CodeEnum;
 import utils.StrUtil;
+import utils.ValidationUtils;
 import web.ApiRouter;
 
 /**
@@ -70,13 +71,13 @@ public final class PermissionRouter extends ApiRouter {
         JsonObject jsonObject = context.getBodyAsJson();
         log.info("add permission info:{}", jsonObject);
 
-        Long orgId = jsonObject.getLong("orgId");
-        String permissionNum = jsonObject.getString("permissionNum");
-        if (Objects.isNull(orgId) || StrUtil.isBlank(permissionNum)){
+        Permission permission = jsonObject.mapTo(Permission.class);
+        String message = ValidationUtils.validate(permission);
+        if (Objects.nonNull(message)){
 
-            serviceUnavailable(context, CodeEnum.SYS_REQUEST);
+            serviceUnavailable(context, message);
         } else {
-            Permission permission = jsonObject.mapTo(Permission.class);
+
             permissionService.addPermission(permission, context, resultVoidHandler(context));
         }
     }

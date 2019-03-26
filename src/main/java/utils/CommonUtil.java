@@ -3,9 +3,14 @@
  */
 package utils;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import io.vertx.config.ConfigRetriever;
+import io.vertx.config.ConfigRetrieverOptions;
+import io.vertx.config.ConfigStoreOptions;
 import io.vertx.core.Context;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpMethod;
@@ -43,7 +48,14 @@ public final class CommonUtil {
     public static void init(Context vertxContext) {
         CommonUtil.vertx = vertxContext.owner();
         CommonUtil.vertxContext = vertxContext;
-        config = vertxContext.config();
+        ConfigStoreOptions storeOptions = new ConfigStoreOptions()
+                .setType("json")
+                .setConfig(new JsonObject().put("src/main/resources", "config.json"));
+        List<ConfigStoreOptions> storeOptionsList = new ArrayList<>();
+        storeOptionsList.add(storeOptions);
+        ConfigRetrieverOptions retrieverOptions = new ConfigRetrieverOptions().setStores(storeOptionsList);
+        ConfigRetriever retriever = ConfigRetriever.create(vertx, retrieverOptions);
+        config = retriever.getCachedConfig();
     }
 
     public static Set<String> getAllowedHeaders(){

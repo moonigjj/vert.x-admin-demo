@@ -31,14 +31,15 @@ public final class HikariCPManager {
      */
     private HikariCPManager(Context ctx) {
         JsonObject vertxConfig = ctx.config();
+        log.info(vertxConfig.toString());
         JsonObject config = new JsonObject()
                 .put("provider_class", vertxConfig.getString("provider_class", "io.vertx.ext.jdbc.spi.impl.HikariCPDataSourceProvider"))
                 .put("jdbcUrl", vertxConfig.getString("jdbcUrl"))
-                .put("driverClassName", vertxConfig.getString("jdbcDriver"))
-                .put("username", vertxConfig.getString("jdbcUser"))
-                .put("password", vertxConfig.getString("jdbcPassword"))
+                .put("driverClassName", vertxConfig.getString("driverClassName"))
+                .put("username", vertxConfig.getString("username"))
+                .put("password", vertxConfig.getString("password"))
                 .put("minimumIdle", vertxConfig.getInteger("minimumIdle", 2))
-                .put("maximumPoolSize", vertxConfig.getInteger("maximumPoolSize", 10))
+                .put("maximumPoolSize", vertxConfig.getInteger("maximumPoolSize", 30))
                 .put("cachePrepStmts", true)
                 .put("prepStmtCacheSize", 250)
                 .put("prepStmtCacheSqlLimit", 2048);
