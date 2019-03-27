@@ -74,7 +74,7 @@ public class OrgService extends JdbcRepositoryWrapper {
      * @param orgId
      * @param resultHandler
      */
-    public void orgInfo(String orgId, Handler<AsyncResult<JsonObject>> resultHandler){
+    public void orgInfo(Long orgId, Handler<AsyncResult<JsonObject>> resultHandler){
 
         JsonArray params = new JsonArray().add(orgId);
         retrieveOne(params, QUERY_ORG_ID)

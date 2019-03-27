@@ -75,7 +75,7 @@ public class RoleService extends JdbcRepositoryWrapper {
      * @param roleId
      * @param resultHandler
      */
-    public void roleInfo(String roleId, Handler<AsyncResult<JsonObject>> resultHandler){
+    public void roleInfo(Long roleId, Handler<AsyncResult<JsonObject>> resultHandler){
 
         JsonArray params = new JsonArray().add(roleId);
         retrieveOne(params, QUERY_ROLE_ID)

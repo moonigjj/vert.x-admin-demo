@@ -75,7 +75,7 @@ public class UserService extends JdbcRepositoryWrapper {
      * @param userId
      * @param resultHandler
      */
-    public void userInfo(String userId, Handler<AsyncResult<JsonObject>> resultHandler){
+    public void userInfo(Long userId, Handler<AsyncResult<JsonObject>> resultHandler){
 
         JsonArray params = new JsonArray().add(userId);
         retrieveOne(params, QUERY_USER_ID)

@@ -70,7 +70,7 @@ public class PermissionService extends JdbcRepositoryWrapper {
      * @param permissionId
      * @param resultHandler
      */
-    public void permissionInfo(String permissionId, Handler<AsyncResult<JsonObject>> resultHandler){
+    public void permissionInfo(Long permissionId, Handler<AsyncResult<JsonObject>> resultHandler){
 
         JsonArray params = new JsonArray().add(permissionId);
         retrieveOne(params, QUERY_PERMISSION_ID)

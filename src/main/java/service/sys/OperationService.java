@@ -70,7 +70,7 @@ public class OperationService extends JdbcRepositoryWrapper {
      * @param operationId
      * @param resultHandler
      */
-    public void operationInfo(String operationId, Handler<AsyncResult<JsonObject>> resultHandler){
+    public void operationInfo(Long operationId, Handler<AsyncResult<JsonObject>> resultHandler){
 
         JsonArray params = new JsonArray().add(operationId);
         retrieveOne(params, QUERY_OPERATION_ID)

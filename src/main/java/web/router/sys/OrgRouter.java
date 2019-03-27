@@ -93,7 +93,7 @@ public final class OrgRouter extends ApiRouter {
             serviceUnavailable(context, CodeEnum.SYS_REQUEST);
         } else {
 
-            orgService.orgInfo(orgId, resultHandlerNonEmpty(context));
+            orgService.orgInfo(Long.parseLong(orgId), resultHandlerNonEmpty(context));
         }
     }
 

@@ -93,7 +93,7 @@ public final class UserRouter extends ApiRouter {
             serviceUnavailable(context, CodeEnum.SYS_REQUEST);
         } else {
 
-            userService.userInfo(userId, resultHandlerNonEmpty(context));
+            userService.userInfo(Long.parseLong(userId), resultHandlerNonEmpty(context));
         }
     }
 

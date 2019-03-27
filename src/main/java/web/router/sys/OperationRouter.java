@@ -92,7 +92,7 @@ public final class OperationRouter extends ApiRouter {
             serviceUnavailable(context, CodeEnum.SYS_REQUEST);
         } else {
 
-            operationService.operationInfo(operationId, resultHandlerNonEmpty(context));
+            operationService.operationInfo(Long.parseLong(operationId), resultHandlerNonEmpty(context));
         }
     }
 

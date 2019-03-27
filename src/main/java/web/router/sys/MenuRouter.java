@@ -92,7 +92,7 @@ public final class MenuRouter extends ApiRouter {
             serviceUnavailable(context, CodeEnum.SYS_REQUEST);
         } else {
 
-            menuService.menuInfo(menuId, resultHandlerNonEmpty(context));
+            menuService.menuInfo(Long.parseLong(menuId), resultHandlerNonEmpty(context));
         }
     }
 

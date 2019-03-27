@@ -93,7 +93,7 @@ public final class RoleRouter extends ApiRouter {
             serviceUnavailable(context, CodeEnum.SYS_REQUEST);
         } else {
 
-            roleService.roleInfo(roleId, resultHandlerNonEmpty(context));
+            roleService.roleInfo(Long.parseLong(roleId), resultHandlerNonEmpty(context));
         }
     }
 

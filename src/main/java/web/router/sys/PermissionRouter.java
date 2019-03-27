@@ -93,7 +93,7 @@ public final class PermissionRouter extends ApiRouter {
             serviceUnavailable(context, CodeEnum.SYS_REQUEST);
         } else {
 
-            permissionService.permissionInfo(permissionId, resultHandlerNonEmpty(context));
+            permissionService.permissionInfo(Long.parseLong(permissionId), resultHandlerNonEmpty(context));
         }
     }
 

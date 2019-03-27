@@ -93,7 +93,7 @@ public final class DeptRouter extends ApiRouter {
             serviceUnavailable(context, CodeEnum.SYS_REQUEST);
         } else {
 
-            deptService.deptInfo(deptId, resultHandlerNonEmpty(context));
+            deptService.deptInfo(Long.parseLong(deptId), resultHandlerNonEmpty(context));
         }
     }
 

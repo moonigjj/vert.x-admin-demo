@@ -75,7 +75,7 @@ public class MenuService extends JdbcRepositoryWrapper {
      * @param menuId
      * @param resultHandler
      */
-    public void menuInfo(String menuId, Handler<AsyncResult<JsonObject>> resultHandler){
+    public void menuInfo(Long menuId, Handler<AsyncResult<JsonObject>> resultHandler){
 
         JsonArray params = new JsonArray().add(menuId);
         retrieveOne(params, QUERY_MENU_ID)

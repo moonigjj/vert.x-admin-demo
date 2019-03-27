@@ -75,7 +75,7 @@ public class DeptService extends JdbcRepositoryWrapper {
      * @param deptId
      * @param resultHandler
      */
-    public void deptInfo(String deptId, Handler<AsyncResult<JsonObject>> resultHandler){
+    public void deptInfo(Long deptId, Handler<AsyncResult<JsonObject>> resultHandler){
 
         JsonArray params = new JsonArray().add(deptId);
         retrieveOne(params, QUERY_DEPT_ID)
