@@ -101,6 +101,7 @@ public class PermissionService extends JdbcRepositoryWrapper {
                             ApiRouter.serviceUnavailable(context, CodeEnum.SYS_NO_DATA);
                         }
                     } else {
+                        log.info(d.cause().getMessage());
                         ApiRouter.serviceUnavailable(context, CodeEnum.SYS_ERROR);
                     }
                 });

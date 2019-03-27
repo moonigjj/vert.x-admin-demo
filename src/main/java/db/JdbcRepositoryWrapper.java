@@ -53,11 +53,11 @@ public class JdbcRepositoryWrapper {
         }));
     }
 
-    protected <K> Future<Optional<JsonObject>> retrieveOne(K param, String sql) {
+    protected <K> Future<Optional<JsonObject>> retrieveOne(JsonArray param, String sql) {
         return getConnection()
                 .compose(connection -> {
                     Future<Optional<JsonObject>> future = Future.future();
-                    connection.queryWithParams(sql, new JsonArray().add(param), r -> {
+                    connection.queryWithParams(sql, param, r -> {
                         if (r.succeeded()) {
                             List<JsonObject> resList = r.result().getRows();
                             if (resList == null || resList.isEmpty()) {

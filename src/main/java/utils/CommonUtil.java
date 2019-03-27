@@ -3,24 +3,21 @@
  */
 package utils;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
-import io.vertx.config.ConfigRetriever;
-import io.vertx.config.ConfigRetrieverOptions;
-import io.vertx.config.ConfigStoreOptions;
 import io.vertx.core.Context;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.json.JsonObject;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  *
  * @author tangyue
  * @version $Id: CommonUtil.java, v 0.1 2018-02-28 15:06 tangyue Exp $$
  */
+@Slf4j
 public final class CommonUtil {
 
     private CommonUtil(){
@@ -48,14 +45,8 @@ public final class CommonUtil {
     public static void init(Context vertxContext) {
         CommonUtil.vertx = vertxContext.owner();
         CommonUtil.vertxContext = vertxContext;
-        ConfigStoreOptions storeOptions = new ConfigStoreOptions()
-                .setType("json")
-                .setConfig(new JsonObject().put("src/main/resources", "config.json"));
-        List<ConfigStoreOptions> storeOptionsList = new ArrayList<>();
-        storeOptionsList.add(storeOptions);
-        ConfigRetrieverOptions retrieverOptions = new ConfigRetrieverOptions().setStores(storeOptionsList);
-        ConfigRetriever retriever = ConfigRetriever.create(vertx, retrieverOptions);
-        config = retriever.getCachedConfig();
+
+        config = vertxContext.config();
     }
 
     public static Set<String> getAllowedHeaders(){

@@ -3,7 +3,6 @@
   "username": "postgres",
   "password": "gs2019",
   "driverClassName": "org.postgresql.Driver",
-  "maximumPoolSize": "30",
   "serverPort": 8086,
 
   "domain": "https://www.",

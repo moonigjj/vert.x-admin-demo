@@ -6,7 +6,7 @@ package db;
 import io.vertx.core.Context;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
-import io.vertx.ext.asyncsql.PostgreSQLClient;
+import io.vertx.ext.jdbc.JDBCClient;
 import io.vertx.ext.sql.SQLClient;
 import lombok.extern.slf4j.Slf4j;
 import utils.CommonUtil;
@@ -34,16 +34,16 @@ public final class HikariCPManager {
         log.info(vertxConfig.toString());
         JsonObject config = new JsonObject()
                 .put("provider_class", vertxConfig.getString("provider_class", "io.vertx.ext.jdbc.spi.impl.HikariCPDataSourceProvider"))
-                .put("jdbcUrl", vertxConfig.getString("jdbcUrl"))
-                .put("driverClassName", vertxConfig.getString("driverClassName"))
-                .put("username", vertxConfig.getString("username"))
-                .put("password", vertxConfig.getString("password"))
-                .put("minimumIdle", vertxConfig.getInteger("minimumIdle", 2))
-                .put("maximumPoolSize", vertxConfig.getInteger("maximumPoolSize", 30))
+                .put("jdbcUrl", vertxConfig.getString("jdbcUrl", "jdbc:postgresql://localhost:5432/auth"))
+                .put("driverClassName", vertxConfig.getString("driverClassName", "org.postgresql.Driver"))
+                .put("username", vertxConfig.getString("username", "postgres"))
+                .put("password", vertxConfig.getString("password", "gs2019"))
+                .put("minimumIdle", 2)
+                .put("maximumPoolSize", 30)
                 .put("cachePrepStmts", true)
                 .put("prepStmtCacheSize", 250)
                 .put("prepStmtCacheSqlLimit", 2048);
-        this.client = PostgreSQLClient.createShared(CommonUtil.vertx(), config, "HikariCP");
+        this.client = JDBCClient.createShared(CommonUtil.vertx(), config, "HikariCP");
     }
 
     public SQLClient getClient() {
