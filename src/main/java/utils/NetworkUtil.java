@@ -32,14 +32,20 @@ public final class NetworkUtil {
         if (Objects.isNull(vertx)) {
             throw new RuntimeException("init CommonUtil");
         }
-        client = vertx.createHttpClient(new HttpClientOptions().setLogActivity(false));
+        client = vertx.createHttpClient(
+                new HttpClientOptions()
+                        .setLogActivity(false)
+                        .setKeepAlive(true)
+                        .setIdleTimeout(10)
+                        .setConnectTimeout(2000).setMaxWaitQueueSize(10).setMaxPoolSize(100)
+        );
     }
 
-    public static void asyncPostStringWithData(String url, String body, ContentType type, Handler<String> callback) {
-        asyncPostStringWithData(url, body, type, "UTF-8", callback);
+    public static void asyncPostStringWithData(String url, String body, ContentType type) {
+        asyncPostStringWithData(url, body, type, "UTF-8");
     }
 
-    public static void asyncPostStringWithData(String url, String body, ContentType type, String encode, Handler<String> callback) {
+    public static void asyncPostStringWithData(String url, String body, ContentType type, String encode) {
         checkInitialized();
         HttpClientRequest req = client.requestAbs(HttpMethod.POST, url);
         switch (type) {
@@ -78,29 +84,19 @@ public final class NetworkUtil {
 
     private static void asyncRequestString(HttpMethod method, String url, Handler<String> callback){
         checkInitialized();
-        client.requestAbs(method, url, resp -> {
-            resp.bodyHandler(buf -> {
-                callback.handle(buf.toString());
-            });
-        }).end();
+        client.requestAbs(method, url, resp -> resp.bodyHandler(buf -> callback.handle(buf.toString()))).end();
     }
 
     private static void asyncRequestJson(HttpMethod method, String url, Handler<JsonObject> callback){
         checkInitialized();
-        client.requestAbs(method, url, resp -> {
-            resp.bodyHandler(buf -> {
-                callback.handle(buf.toJsonObject());
-            });
-        }).end();
+        client.requestAbs(method, url, resp -> resp.bodyHandler(buf -> {
+            callback.handle(buf.toJsonObject());
+        })).end();
     }
 
     private static void asyncRequestJson(HttpMethod method, String url, Future<JsonObject> callback){
         checkInitialized();
-        client.requestAbs(method, url, resp -> {
-            resp.bodyHandler(buf -> {
-                callback.complete(buf.toJsonObject());
-            });
-        }).end();
+        client.requestAbs(method, url, resp -> resp.bodyHandler(buf -> callback.complete(buf.toJsonObject()))).end();
     }
 
     private static void checkInitialized() {

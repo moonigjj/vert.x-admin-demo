@@ -105,18 +105,13 @@ public final class PermissionRouter extends ApiRouter {
 
         JsonObject jsonObject = context.getBodyAsJson();
         log.info("edit permission info: {}", jsonObject);
-        Long permissionId = jsonObject.getLong("permissionId");
-        Long orgId = jsonObject.getLong("orgId");
 
-        String permissionNum = jsonObject.getString("permissionNum");
-        String url = jsonObject.getString("url");
-        String remark = jsonObject.getString("remark");
-        if (Objects.isNull(permissionId) || Objects.isNull(orgId)){
+        Permission permission = jsonObject.mapTo(Permission.class);
+        String message = ValidationUtils.validate(permission);
+        if (Objects.isNull(message)){
 
             serviceUnavailable(context, CodeEnum.SYS_REQUEST);
         } else {
-            Permission permission = new Permission();
-            permission.setId(permissionId);
 
             permissionService.editPermission(permission, context, resultVoidHandler(context));
         }

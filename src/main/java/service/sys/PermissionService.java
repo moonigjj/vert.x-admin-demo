@@ -3,6 +3,7 @@
  */
 package service.sys;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -11,6 +12,7 @@ import db.JdbcRepositoryWrapper;
 import entity.sys.Permission;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
+import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
@@ -70,11 +72,12 @@ public class PermissionService extends JdbcRepositoryWrapper {
      * @param permissionId
      * @param resultHandler
      */
-    public void permissionInfo(Long permissionId, Handler<AsyncResult<JsonObject>> resultHandler){
+    public void permissionInfo(Long permissionId, Handler<AsyncResult<Permission>> resultHandler){
 
         JsonArray params = new JsonArray().add(permissionId);
         retrieveOne(params, QUERY_PERMISSION_ID)
                 .map(option -> option.orElse(null))
+                .map(json -> json.mapTo(Permission.class))
                 .setHandler(resultHandler);
     }
 
@@ -84,12 +87,11 @@ public class PermissionService extends JdbcRepositoryWrapper {
     public void addPermission(Permission permission, RoutingContext context, Handler<AsyncResult<Void>> resultHandler){
 
         log.info("start add permission: {}", permission);
-        Date now = new Date();
-        permission.setCreateTime(now);
+        permission.setCreateTime(LocalDateTime.now());
         JsonArray jsonArray = new JsonArray()
                 .add(permission.getName())
                 .add(permission.getRemark())
-                .add(permission.getCreateTime().toInstant());
+                .add(permission.getCreateTime());
         log.info("insert permission info: {}", jsonArray);
         JsonArray params = new JsonArray().add(permission.getName());
         retrieveOne(params, QUERY_PERMISSION_NAME)

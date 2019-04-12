@@ -26,7 +26,6 @@ public final class CommonUtil {
     }
 
     private static Vertx vertx;
-    private static Context vertxContext;
     private static JsonObject config;
 
 
@@ -34,19 +33,14 @@ public final class CommonUtil {
         return vertx;
     }
 
-    public static Context vertxContext() {
-        return vertxContext;
-    }
 
     public static JsonObject getConfig() {
         return config;
     }
 
-    public static void init(Context vertxContext) {
-        CommonUtil.vertx = vertxContext.owner();
-        CommonUtil.vertxContext = vertxContext;
-
-        config = vertxContext.config();
+    public static void init(Vertx vertx, JsonObject config) {
+        CommonUtil.vertx = vertx;
+        CommonUtil.config = config;
     }
 
     public static Set<String> getAllowedHeaders(){

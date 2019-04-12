@@ -3,7 +3,6 @@
  */
 package db;
 
-import io.vertx.core.Context;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.jdbc.JDBCClient;
@@ -27,23 +26,21 @@ public final class HikariCPManager {
      * 主要任务是初始化连接池
      * 从vertx配置中读取u数据库相关配置，然后创建JDBCClient，保存到私有变量
      * @author Leibniz.Hu
-     * @param ctx
      */
-    private HikariCPManager(Context ctx) {
-        JsonObject vertxConfig = ctx.config();
-        log.info(vertxConfig.toString());
-        JsonObject config = new JsonObject()
-                .put("provider_class", vertxConfig.getString("provider_class", "io.vertx.ext.jdbc.spi.impl.HikariCPDataSourceProvider"))
-                .put("jdbcUrl", vertxConfig.getString("jdbcUrl", "jdbc:postgresql://localhost:5432/auth"))
-                .put("driverClassName", vertxConfig.getString("driverClassName", "org.postgresql.Driver"))
-                .put("username", vertxConfig.getString("username", "postgres"))
-                .put("password", vertxConfig.getString("password", "gs2019"))
+    private HikariCPManager() {
+        JsonObject config = CommonUtil.getConfig();
+        JsonObject dbConfig = new JsonObject()
+                .put("provider_class", config.getString("provider_class", "io.vertx.ext.jdbc.spi.impl.HikariCPDataSourceProvider"))
+                .put("jdbcUrl", config.getString("jdbcUrl", "jdbc:postgresql://localhost:5432/auth"))
+                .put("driverClassName", config.getString("driverClassName", "org.postgresql.Driver"))
+                .put("username", config.getString("username", "postgres"))
+                .put("password", config.getString("password", "gs2019"))
                 .put("minimumIdle", 2)
                 .put("maximumPoolSize", 30)
                 .put("cachePrepStmts", true)
                 .put("prepStmtCacheSize", 250)
                 .put("prepStmtCacheSqlLimit", 2048);
-        this.client = JDBCClient.createShared(CommonUtil.vertx(), config, "HikariCP");
+        this.client = JDBCClient.createShared(CommonUtil.vertx(), dbConfig, "HikariCP");
     }
 
     public SQLClient getClient() {
@@ -62,7 +59,7 @@ public final class HikariCPManager {
         if(vertx == null){
             throw new RuntimeException("请先初始化Constants类！");
         }
-        INSTANCE = new HikariCPManager(CommonUtil.vertxContext()); //创建单例实例
+        INSTANCE = new HikariCPManager(); //创建单例实例
 
         INSTANCE.log.info("HikariCP连接池初始化成功！");
         return INSTANCE;

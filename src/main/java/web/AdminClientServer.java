@@ -2,15 +2,28 @@ package web; /**
  * chenxitech.cn Inc. Copyright (c) 2017-2018 All Rights Reserved.
  */
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+
 import db.HikariCPManager;
+import io.vertx.config.ConfigRetriever;
+import io.vertx.config.ConfigRetrieverOptions;
+import io.vertx.config.ConfigStoreOptions;
 import io.vertx.core.AbstractVerticle;
+import io.vertx.core.Context;
+import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
+import io.vertx.core.json.Json;
+import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.CorsHandler;
 import lombok.extern.slf4j.Slf4j;
 import utils.CodeEnum;
 import utils.CommonUtil;
+import utils.NetworkUtil;
 import web.router.DeskRouter;
 import web.router.DishRouter;
 import web.router.OrderRouter;
@@ -35,7 +48,6 @@ public class AdminClientServer extends AbstractVerticle {
     @Override
     public void start() {
 
-        initComponents();
         Router router = Router.router(vertx);
         router.route().handler(BodyHandler.create())
                 .handler(CorsHandler.create("*")
@@ -70,12 +82,17 @@ public class AdminClientServer extends AbstractVerticle {
         this.server.close(res -> log.info("HTTP服务器关闭" + (res.succeeded()?"成功":"失败")));
     }
 
-    // 初始化
-    private void initComponents(){
-        CommonUtil.init(context);
-        HikariCPManager.init();
+    @Override
+    public void init(Vertx vertx, Context context) {
+        super.init(vertx, context);
+        Json.mapper.setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
+        Json.mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        Json.mapper
+                .registerModule(new JavaTimeModule());
+        Json.prettyMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        //Json.mapper.setAnnotationIntrospector(new JacksonAnnotationIntrospector());
+        // create the options for a properties file store
+
     }
-
-
 
 }

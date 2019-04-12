@@ -41,19 +41,17 @@ public class JdbcRepositoryWrapper {
     }
 
     protected <R> void execute(JsonArray params, String sql, R ret, Handler<AsyncResult<R>> resultHandler) {
-        client.getConnection(connHandler(resultHandler, connection -> {
-            connection.updateWithParams(sql, params, r -> {
-                if (r.succeeded()) {
-                    resultHandler.handle(Future.succeededFuture(ret));
-                } else {
-                    resultHandler.handle(Future.failedFuture(r.cause()));
-                }
-                connection.close();
-            });
-        }));
+        client.getConnection(connHandler(resultHandler, connection -> connection.updateWithParams(sql, params, r -> {
+            if (r.succeeded()) {
+                resultHandler.handle(Future.succeededFuture(ret));
+            } else {
+                resultHandler.handle(Future.failedFuture(r.cause()));
+            }
+            connection.close();
+        })));
     }
 
-    protected <K> Future<Optional<JsonObject>> retrieveOne(JsonArray param, String sql) {
+    protected Future<Optional<JsonObject>> retrieveOne(JsonArray param, String sql) {
         return getConnection()
                 .compose(connection -> {
                     Future<Optional<JsonObject>> future = Future.future();
@@ -80,10 +78,6 @@ public class JdbcRepositoryWrapper {
         return limit * (page - 1);
     }
 
-    protected Future<List<JsonObject>> retrieveByPage(int page, int limit, String sql) {
-        JsonArray params = new JsonArray().add(calcPage(page, limit)).add(limit);
-        return retrieveMany(params, sql);
-    }
 
     protected Future<List<JsonObject>> retrieveMany(JsonArray param, String sql) {
         return getConnection().compose(connection -> {

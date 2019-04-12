@@ -3,8 +3,10 @@
  */
 package entity.sys;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.validation.constraints.NotBlank;
 
@@ -27,5 +29,6 @@ public class Permission implements Serializable {
 
     private String remark = "";
 
-    private Date createTime;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime createTime;
 }

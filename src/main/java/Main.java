@@ -6,13 +6,20 @@ import com.google.common.collect.Lists;
 
 import java.util.List;
 
+import db.HikariCPManager;
+import io.vertx.config.ConfigRetriever;
+import io.vertx.config.ConfigRetrieverOptions;
+import io.vertx.config.ConfigStoreOptions;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.CompositeFuture;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Future;
 import io.vertx.core.Vertx;
+import io.vertx.core.VertxOptions;
 import io.vertx.core.json.JsonObject;
 import lombok.extern.slf4j.Slf4j;
+import utils.CommonUtil;
+import utils.NetworkUtil;
 import web.AdminClientServer;
 
 /**
@@ -25,10 +32,32 @@ public class Main {
 
     public static void main(String[] args) {
 
-        Vertx vertx = Vertx.vertx();
-        deploy(vertx, ServiceLauncher.class, new DeploymentOptions());
-    }
+        Vertx vertx = Vertx.vertx(new VertxOptions().setWorkerPoolSize(40));
+        ConfigStoreOptions jsonFile = new ConfigStoreOptions()
+                .setType("file")
+                .setFormat("json")
+                .setConfig(new JsonObject().put("path", "config.json"));
+        // add the options to the chain
+        ConfigRetrieverOptions options = new ConfigRetrieverOptions().addStore(jsonFile);
 
+        ConfigRetriever retriever = ConfigRetriever.create(vertx, options);
+        retriever.getConfig(ar -> {
+            if (ar.succeeded()) {
+                log.info("config: {}", ar.result());
+                JsonObject result = ar.result();
+                //
+                initComponents(result);
+                deploy(vertx, ServiceLauncher.class, new DeploymentOptions());
+            }
+
+        });
+    }
+    // 初始化
+    private static void initComponents(JsonObject config){
+        CommonUtil.init(Vertx.vertx(), config);
+        HikariCPManager.init();
+        NetworkUtil.init();
+    }
 
     public static class ServiceLauncher extends AbstractVerticle {
 
