@@ -17,7 +17,6 @@ import utils.ValidationUtils;
 import web.ApiRouter;
 
 /**
- *
  * @author tangyue
  * @version $Id: AuthRouter.java, v 0.1 2019-01-21 13:46 tangyue Exp $$
  */
@@ -26,14 +25,14 @@ public final class PermissionRouter extends ApiRouter {
 
     private PermissionService permissionService;
 
-    public static Router create(){
+    public static Router create() {
 
         return new PermissionRouter().router;
     }
 
-    private PermissionRouter(){
+    private PermissionRouter() {
 
-        this.router.get("/list/:orgId").handler(this::permissionListPage);
+        this.router.get("/list").handler(this::permissionListPage);
         this.router.get("/info/:permissionId").handler(this::permissionInfo);
         this.router.post("/add").handler(this::addPermission);
         this.router.post("/edit").handler(this::editPermission);
@@ -43,37 +42,30 @@ public final class PermissionRouter extends ApiRouter {
 
     /**
      * 权限分页列表
-     * @param context
      */
-    private void permissionListPage(RoutingContext context){
-        String orgId = context.request().getParam("orgId");
-        log.info("permission list page: {}", orgId);
+    private void permissionListPage(RoutingContext context) {
         String pageNum = context.request().getParam("pageNum");
         String pageSize = context.request().getParam("pageSize");
-        if (StrUtil.isBlank(orgId)){
-            serviceUnavailable(context, CodeEnum.SYS_REQUEST);
-        } else {
 
-            Integer page = StrUtil.isNumber(pageNum) ? Integer.parseInt(pageNum) : 1;
-            Integer size = StrUtil.isNumber(pageSize) ? Integer.parseInt(pageSize) : 10;
-            JsonObject jsonObject = new JsonObject().put("orgId", orgId)
-                    .put("permissionNum", context.request().getParam("permissionNum"));
-            this.permissionService.permissionListPage(jsonObject, page, size, resultHandlerNonEmpty(context));
-        }
+        Integer page = StrUtil.isNumber(pageNum) ? Integer.parseInt(pageNum) : 1;
+        Integer size = StrUtil.isNumber(pageSize) ? Integer.parseInt(pageSize) : 10;
+        JsonObject jsonObject = new JsonObject()
+                .put("permissionName", context.request().getParam("permissionName"));
+        this.permissionService.permissionListPage(jsonObject, page, size, resultHandlerNonEmpty(context));
+
     }
 
     /**
      * 添加权限
-     * @param context
      */
-    private void addPermission(RoutingContext context){
+    private void addPermission(RoutingContext context) {
 
         JsonObject jsonObject = context.getBodyAsJson();
         log.info("add permission info:{}", jsonObject);
 
         Permission permission = jsonObject.mapTo(Permission.class);
         String message = ValidationUtils.validate(permission);
-        if (Objects.nonNull(message)){
+        if (Objects.nonNull(message)) {
 
             serviceUnavailable(context, message);
         } else {
@@ -84,12 +76,11 @@ public final class PermissionRouter extends ApiRouter {
 
     /**
      * 查看权限信息
-     * @param context
      */
-    private void permissionInfo(RoutingContext context){
+    private void permissionInfo(RoutingContext context) {
 
         String permissionId = context.request().getParam("permissionId");
-        if (StrUtil.isBlank(permissionId)){
+        if (StrUtil.isBlank(permissionId)) {
             serviceUnavailable(context, CodeEnum.SYS_REQUEST);
         } else {
 
@@ -99,16 +90,15 @@ public final class PermissionRouter extends ApiRouter {
 
     /**
      * 编辑权限信息
-     * @param context
      */
-    private void editPermission(RoutingContext context){
+    private void editPermission(RoutingContext context) {
 
         JsonObject jsonObject = context.getBodyAsJson();
         log.info("edit permission info: {}", jsonObject);
 
         Permission permission = jsonObject.mapTo(Permission.class);
         String message = ValidationUtils.validate(permission);
-        if (Objects.isNull(message)){
+        if (Objects.isNull(message)) {
 
             serviceUnavailable(context, CodeEnum.SYS_REQUEST);
         } else {
@@ -118,5 +108,5 @@ public final class PermissionRouter extends ApiRouter {
 
 
     }
-    
+
 }

@@ -31,7 +31,7 @@ public class UserService extends JdbcRepositoryWrapper {
     private static final String BASE = " id, user_name, real_name, nick_name, avatar, pwd, salt, org_id, open_id, union_id, status, online, del_flag, create_time, update_time ";
 
     private static final String QUERY_ALL_PAGE = "SELECT" + BASE + "FROM SYS_USER " +
-            "where org_id = ? order by id LIMIT ?, ?";
+            "where org_id = ?";
 
     private static final String QUERY_USER_ID = "SELECT" + BASE + "FROM SYS_USER " +
             "where org_id = ? and id = ?";
@@ -56,15 +56,14 @@ public class UserService extends JdbcRepositoryWrapper {
      */
     public void userListPage(JsonObject params, int page, int size, Handler<AsyncResult<List<JsonObject>>> resultHandler){
 
-        log.info("start user list params: {}", params);
         JsonArray jsonArray = new JsonArray().add(params.getString("orgId"));
         StringBuffer sb = new StringBuffer(QUERY_ALL_PAGE);
         if (StrUtil.isNotBlank(params.getString("userName"))){
             sb.append(" and name = ?");
             jsonArray.add(params.getString("userName"));
         }
-        sb.append(" order by id desc limit ?, ?");
-        jsonArray.add(calcPage(page, size)).add(size);
+        sb.append(" order by id desc limit ? offset ?");
+        jsonArray.add(size).add(calcPage(page, size));
         retrieveMany(jsonArray, sb.toString())
                 .setHandler(resultHandler);
 

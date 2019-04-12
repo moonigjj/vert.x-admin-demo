@@ -31,7 +31,7 @@ public class DeptService extends JdbcRepositoryWrapper {
     private static final String BASE = " id, org_id, name, level, remark, parent_id, del_flag, create_time, update_time ";
 
     private static final String QUERY_ALL_PAGE = "SELECT" + BASE + "FROM SYS_DEPT " +
-            "where org_id = ? order by id LIMIT ?, ?";
+            "where org_id = ?";
 
     private static final String QUERY_DEPT_ID = "SELECT" + BASE + "FROM SYS_DEPT " +
             "where org_id = ? and id = ?";
@@ -63,8 +63,8 @@ public class DeptService extends JdbcRepositoryWrapper {
             sb.append(" and name = ?");
             jsonArray.add(params.getString("deptName"));
         }
-        sb.append(" order by id desc limit ?, ?");
-        jsonArray.add(calcPage(page, size)).add(size);
+        sb.append(" order by id desc limit ? offset ?");
+        jsonArray.add(size).add(calcPage(page, size));
         retrieveMany(jsonArray, sb.toString())
                 .setHandler(resultHandler);
 

@@ -3,10 +3,12 @@
  */
 package entity.sys;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import common.CustomDateSerializer;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 import javax.validation.constraints.NotBlank;
 
@@ -29,6 +31,6 @@ public class Permission implements Serializable {
 
     private String remark = "";
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime createTime;
+    @JsonSerialize(using = CustomDateSerializer.class)
+    private Date createTime;
 }

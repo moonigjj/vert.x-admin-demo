@@ -31,7 +31,7 @@ public class MenuService extends JdbcRepositoryWrapper {
     private static final String BASE = " id, parent_id, name, url, icon, sort_name, status, remark, create_time, update_time ";
 
     private static final String QUERY_ALL_PAGE = "SELECT" + BASE + "FROM SYS_MENU " +
-            "where org_id = ? order by id LIMIT ?, ?";
+            "where org_id = ?";
 
     private static final String QUERY_MENU_ID = "SELECT" + BASE + "FROM SYS_MENU " +
             "where org_id = ? and id = ?";
@@ -63,8 +63,8 @@ public class MenuService extends JdbcRepositoryWrapper {
             sb.append(" and name = ?");
             jsonArray.add(params.getString("menuName"));
         }
-        sb.append(" order by id desc limit ?, ?");
-        jsonArray.add(calcPage(page, size)).add(size);
+        sb.append(" order by id desc limit ? offset ?");
+        jsonArray.add(size).add(calcPage(page, size));
         retrieveMany(jsonArray, sb.toString())
                 .setHandler(resultHandler);
 

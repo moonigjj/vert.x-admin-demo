@@ -33,6 +33,7 @@ public class Main {
     public static void main(String[] args) {
 
         Vertx vertx = Vertx.vertx(new VertxOptions().setWorkerPoolSize(40));
+        // create the options for a properties file store
         ConfigStoreOptions jsonFile = new ConfigStoreOptions()
                 .setType("file")
                 .setFormat("json")
@@ -43,7 +44,7 @@ public class Main {
         ConfigRetriever retriever = ConfigRetriever.create(vertx, options);
         retriever.getConfig(ar -> {
             if (ar.succeeded()) {
-                log.info("config: {}", ar.result());
+                log.debug("config: {}", ar.result());
                 JsonObject result = ar.result();
                 //
                 initComponents(result);

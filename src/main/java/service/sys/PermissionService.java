@@ -3,7 +3,7 @@
  */
 package service.sys;
 
-import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -12,7 +12,6 @@ import db.JdbcRepositoryWrapper;
 import entity.sys.Permission;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
-import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
@@ -31,8 +30,7 @@ public class PermissionService extends JdbcRepositoryWrapper {
 
     private static final String BASE = " id, name, remark, create_time ";
 
-    private static final String QUERY_ALL_PAGE = "SELECT" + BASE + "FROM SYS_PERMISSION " +
-            "order by id LIMIT ?, ?";
+    private static final String QUERY_ALL_PAGE = "SELECT" + BASE + "FROM SYS_PERMISSION ";
 
     private static final String QUERY_PERMISSION_ID = "SELECT" + BASE + "FROM SYS_PERMISSION " +
             "where id = ?";
@@ -51,18 +49,23 @@ public class PermissionService extends JdbcRepositoryWrapper {
      * @param params
      * @param resultHandler
      */
-    public void permissionListPage(JsonObject params, int page, int size, Handler<AsyncResult<List<JsonObject>>> resultHandler){
+    public void permissionListPage(JsonObject params, int page, int size, Handler<AsyncResult<List<Permission>>> resultHandler){
 
         log.info("start permission list params: {}", params);
-        JsonArray jsonArray = new JsonArray().add(params.getString("orgId"));
+        JsonArray jsonArray = new JsonArray();
         StringBuffer sb = new StringBuffer(QUERY_ALL_PAGE);
         if (StrUtil.isNotBlank(params.getString("permissionName"))){
             sb.append(" and name = ?");
             jsonArray.add(params.getString("permissionName"));
         }
-        sb.append(" order by id desc limit ?, ?");
-        jsonArray.add(calcPage(page, size)).add(size);
+        sb.append(" order by id desc limit ? offset ?");
+        jsonArray.add(size).add(calcPage(page, size));
         retrieveMany(jsonArray, sb.toString())
+                .map(list -> {
+                    List<Permission> permissions = new ArrayList<>();
+                    list.forEach(json -> permissions.add(json.mapTo(Permission.class)));
+                    return permissions;
+                })
                 .setHandler(resultHandler);
 
     }
@@ -87,7 +90,7 @@ public class PermissionService extends JdbcRepositoryWrapper {
     public void addPermission(Permission permission, RoutingContext context, Handler<AsyncResult<Void>> resultHandler){
 
         log.info("start add permission: {}", permission);
-        permission.setCreateTime(LocalDateTime.now());
+        permission.setCreateTime(new Date());
         JsonArray jsonArray = new JsonArray()
                 .add(permission.getName())
                 .add(permission.getRemark())

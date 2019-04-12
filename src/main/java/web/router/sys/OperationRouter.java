@@ -16,7 +16,6 @@ import utils.StrUtil;
 import web.ApiRouter;
 
 /**
- *
  * @author tangyue
  * @version $Id: AuthRouter.java, v 0.1 2019-01-21 13:46 tangyue Exp $$
  */
@@ -25,14 +24,14 @@ public final class OperationRouter extends ApiRouter {
 
     private OperationService operationService;
 
-    public static Router create(){
+    public static Router create() {
 
         return new OperationRouter().router;
     }
 
-    private OperationRouter(){
+    private OperationRouter() {
 
-        this.router.get("/list/:orgId").handler(this::operationListPage);
+        this.router.get("/list").handler(this::operationListPage);
         this.router.get("/info/:operationId").handler(this::operationInfo);
         this.router.post("/add").handler(this::addOperation);
         this.router.post("/edit").handler(this::editOperation);
@@ -42,37 +41,30 @@ public final class OperationRouter extends ApiRouter {
 
     /**
      * 操作分页列表
-     * @param context
      */
-    private void operationListPage(RoutingContext context){
-        String orgId = context.request().getParam("orgId");
-        log.info("operation list page: {}", orgId);
+    private void operationListPage(RoutingContext context) {
         String pageNum = context.request().getParam("pageNum");
         String pageSize = context.request().getParam("pageSize");
-        if (StrUtil.isBlank(orgId)){
-            serviceUnavailable(context, CodeEnum.SYS_REQUEST);
-        } else {
 
-            Integer page = StrUtil.isNumber(pageNum) ? Integer.parseInt(pageNum) : 1;
-            Integer size = StrUtil.isNumber(pageSize) ? Integer.parseInt(pageSize) : 10;
-            JsonObject jsonObject = new JsonObject().put("orgId", orgId)
-                    .put("operationNum", context.request().getParam("operationNum"));
-            this.operationService.operationListPage(jsonObject, page, size, resultHandlerNonEmpty(context));
-        }
+        Integer page = StrUtil.isNumber(pageNum) ? Integer.parseInt(pageNum) : 1;
+        Integer size = StrUtil.isNumber(pageSize) ? Integer.parseInt(pageSize) : 10;
+        JsonObject jsonObject = new JsonObject()
+                .put("operationName", context.request().getParam("operationName"));
+        this.operationService.operationListPage(jsonObject, page, size, resultHandlerNonEmpty(context));
+
     }
 
     /**
      * 添加操作
-     * @param context
      */
-    private void addOperation(RoutingContext context){
+    private void addOperation(RoutingContext context) {
 
         JsonObject jsonObject = context.getBodyAsJson();
         log.info("add operation info:{}", jsonObject);
 
         Long orgId = jsonObject.getLong("orgId");
         String operationNum = jsonObject.getString("operationNum");
-        if (Objects.isNull(orgId) || StrUtil.isBlank(operationNum)){
+        if (Objects.isNull(orgId) || StrUtil.isBlank(operationNum)) {
 
             serviceUnavailable(context, CodeEnum.SYS_REQUEST);
         } else {
@@ -83,12 +75,11 @@ public final class OperationRouter extends ApiRouter {
 
     /**
      * 查看操作信息
-     * @param context
      */
-    private void operationInfo(RoutingContext context){
+    private void operationInfo(RoutingContext context) {
 
         String operationId = context.request().getParam("operationId");
-        if (StrUtil.isBlank(operationId)){
+        if (StrUtil.isBlank(operationId)) {
             serviceUnavailable(context, CodeEnum.SYS_REQUEST);
         } else {
 
@@ -98,9 +89,8 @@ public final class OperationRouter extends ApiRouter {
 
     /**
      * 编辑操作信息
-     * @param context
      */
-    private void editOperation(RoutingContext context){
+    private void editOperation(RoutingContext context) {
 
         JsonObject jsonObject = context.getBodyAsJson();
         log.info("edit operation info: {}", jsonObject);
@@ -110,7 +100,7 @@ public final class OperationRouter extends ApiRouter {
         String operationNum = jsonObject.getString("operationNum");
         String url = jsonObject.getString("url");
         String remark = jsonObject.getString("remark");
-        if (Objects.isNull(operationId) || Objects.isNull(orgId)){
+        if (Objects.isNull(operationId) || Objects.isNull(orgId)) {
 
             serviceUnavailable(context, CodeEnum.SYS_REQUEST);
         } else {

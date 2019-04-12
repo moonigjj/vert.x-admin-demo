@@ -29,8 +29,7 @@ public class OperationService extends JdbcRepositoryWrapper {
 
     private static final String BASE = " id, name, operation, create_time ";
 
-    private static final String QUERY_ALL_PAGE = "SELECT" + BASE + "FROM SYS_OPERATION " +
-            "order by id LIMIT ?, ?";
+    private static final String QUERY_ALL_PAGE = "SELECT" + BASE + "FROM SYS_OPERATION ";
 
     private static final String QUERY_OPERATION_ID = "SELECT" + BASE + "FROM SYS_OPERATION " +
             "where id = ?";
@@ -52,14 +51,14 @@ public class OperationService extends JdbcRepositoryWrapper {
     public void operationListPage(JsonObject params, int page, int size, Handler<AsyncResult<List<JsonObject>>> resultHandler){
 
         log.info("start operation list params: {}", params);
-        JsonArray jsonArray = new JsonArray().add(params.getString("orgId"));
+        JsonArray jsonArray = new JsonArray();
         StringBuffer sb = new StringBuffer(QUERY_ALL_PAGE);
         if (StrUtil.isNotBlank(params.getString("operationName"))){
             sb.append(" and name = ?");
             jsonArray.add(params.getString("operationName"));
         }
-        sb.append(" order by id desc limit ?, ?");
-        jsonArray.add(calcPage(page, size)).add(size);
+        sb.append(" order by id desc limit ? offset ?");
+        jsonArray.add(size).add(calcPage(page, size));
         retrieveMany(jsonArray, sb.toString())
                 .setHandler(resultHandler);
 
