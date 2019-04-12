@@ -56,7 +56,7 @@ public final class MenuRouter extends ApiRouter {
             Integer page = StrUtil.isNumber(pageNum) ? Integer.parseInt(pageNum) : 1;
             Integer size = StrUtil.isNumber(pageSize) ? Integer.parseInt(pageSize) : 10;
             JsonObject jsonObject = new JsonObject().put("orgId", orgId)
-                    .put("menuNum", context.request().getParam("menuNum"));
+                    .put("menuName", context.request().getParam("menuName"));
             this.menuService.menuListPage(jsonObject, page, size, resultHandlerNonEmpty(context));
         }
     }

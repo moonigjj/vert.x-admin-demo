@@ -62,9 +62,8 @@ public final class OperationRouter extends ApiRouter {
         JsonObject jsonObject = context.getBodyAsJson();
         log.info("add operation info:{}", jsonObject);
 
-        Long orgId = jsonObject.getLong("orgId");
-        String operationNum = jsonObject.getString("operationNum");
-        if (Objects.isNull(orgId) || StrUtil.isBlank(operationNum)) {
+        String operationName = jsonObject.getString("operationName");
+        if (StrUtil.isBlank(operationName)) {
 
             serviceUnavailable(context, CodeEnum.SYS_REQUEST);
         } else {

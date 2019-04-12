@@ -89,7 +89,6 @@ public class PermissionService extends JdbcRepositoryWrapper {
      */
     public void addPermission(Permission permission, RoutingContext context, Handler<AsyncResult<Void>> resultHandler){
 
-        log.info("start add permission: {}", permission);
         permission.setCreateTime(new Date());
         JsonArray jsonArray = new JsonArray()
                 .add(permission.getName())
@@ -132,7 +131,6 @@ public class PermissionService extends JdbcRepositoryWrapper {
         sb.append(" update_time = ? where id = ?");
         jsonArray.add(new Date().toInstant()).add(permission.getId());
         log.info("update permission info: {}", jsonArray);
-        log.info("update permission sql: {}", sb);
 
         if (Objects.nonNull(permission.getName())) {
             JsonArray params = new JsonArray().add(permission.getName());

@@ -57,7 +57,7 @@ public final class DeptRouter extends ApiRouter {
             Integer page = StrUtil.isNumber(pageNum) ? Integer.parseInt(pageNum) : 1;
             Integer size = StrUtil.isNumber(pageSize) ? Integer.parseInt(pageSize) : 10;
             JsonObject jsonObject = new JsonObject().put("orgId", orgId)
-                    .put("deptNum", context.request().getParam("deptNum"));
+                    .put("deptName", context.request().getParam("deptName"));
             this.deptService.deptListPage(jsonObject, page, size, resultHandlerNonEmpty(context));
         }
     }
