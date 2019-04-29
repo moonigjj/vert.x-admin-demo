@@ -3,6 +3,7 @@
  */
 package service.sys;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -54,7 +55,7 @@ public class MenuService extends JdbcRepositoryWrapper {
      * @param params
      * @param resultHandler
      */
-    public void menuListPage(JsonObject params, int page, int size, Handler<AsyncResult<List<JsonObject>>> resultHandler){
+    public void menuListPage(JsonObject params, int page, int size, Handler<AsyncResult<List<Menu>>> resultHandler){
 
         log.info("start menu list params: {}", params);
         JsonArray jsonArray = new JsonArray().add(params.getString("orgId"));
@@ -66,6 +67,11 @@ public class MenuService extends JdbcRepositoryWrapper {
         sb.append(" order by id desc limit ? offset ?");
         jsonArray.add(size).add(calcPage(page, size));
         retrieveMany(jsonArray, sb.toString())
+                .map(list -> {
+                    List<Menu> menus = new ArrayList<>();
+                    list.forEach(json -> menus.add(json.mapTo(Menu.class)));
+                    return menus;
+                })
                 .setHandler(resultHandler);
 
     }
@@ -75,11 +81,12 @@ public class MenuService extends JdbcRepositoryWrapper {
      * @param menuId
      * @param resultHandler
      */
-    public void menuInfo(Long menuId, Handler<AsyncResult<JsonObject>> resultHandler){
+    public void menuInfo(Long menuId, Handler<AsyncResult<Menu>> resultHandler){
 
         JsonArray params = new JsonArray().add(menuId);
         retrieveOne(params, QUERY_MENU_ID)
                 .map(option -> option.orElse(null))
+                .map(json -> json.mapTo(Menu.class))
                 .setHandler(resultHandler);
     }
 

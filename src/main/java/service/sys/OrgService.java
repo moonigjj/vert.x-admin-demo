@@ -3,6 +3,9 @@
  */
 package service.sys;
 
+import com.sun.org.apache.xpath.internal.operations.Or;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -52,7 +55,7 @@ public class OrgService extends JdbcRepositoryWrapper {
      * @param params
      * @param resultHandler
      */
-    public void orgListPage(JsonObject params, int page, int size, Handler<AsyncResult<List<JsonObject>>> resultHandler){
+    public void orgListPage(JsonObject params, int page, int size, Handler<AsyncResult<List<Org>>> resultHandler){
 
         log.info("start org list params: {}", params);
         JsonArray jsonArray = new JsonArray().add(params.getString("orgId"));
@@ -64,6 +67,11 @@ public class OrgService extends JdbcRepositoryWrapper {
         sb.append(" order by id desc limit ? offset ?");
         jsonArray.add(size).add(calcPage(page, size));
         retrieveMany(jsonArray, sb.toString())
+                .map(list -> {
+                    List<Org> orgs = new ArrayList<>();
+                    list.forEach(json -> orgs.add(json.mapTo(Org.class)));
+                    return orgs;
+                })
                 .setHandler(resultHandler);
 
     }
@@ -73,11 +81,12 @@ public class OrgService extends JdbcRepositoryWrapper {
      * @param orgId
      * @param resultHandler
      */
-    public void orgInfo(Long orgId, Handler<AsyncResult<JsonObject>> resultHandler){
+    public void orgInfo(Long orgId, Handler<AsyncResult<Org>> resultHandler){
 
         JsonArray params = new JsonArray().add(orgId);
         retrieveOne(params, QUERY_ORG_ID)
                 .map(option -> option.orElse(null))
+                .map(json -> json.mapTo(Org.class))
                 .setHandler(resultHandler);
     }
 

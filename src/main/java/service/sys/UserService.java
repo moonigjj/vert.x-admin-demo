@@ -3,6 +3,7 @@
  */
 package service.sys;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -54,7 +55,7 @@ public class UserService extends JdbcRepositoryWrapper {
      * @param params
      * @param resultHandler
      */
-    public void userListPage(JsonObject params, int page, int size, Handler<AsyncResult<List<JsonObject>>> resultHandler){
+    public void userListPage(JsonObject params, int page, int size, Handler<AsyncResult<List<User>>> resultHandler){
 
         JsonArray jsonArray = new JsonArray().add(params.getString("orgId"));
         StringBuffer sb = new StringBuffer(QUERY_ALL_PAGE);
@@ -65,6 +66,11 @@ public class UserService extends JdbcRepositoryWrapper {
         sb.append(" order by id desc limit ? offset ?");
         jsonArray.add(size).add(calcPage(page, size));
         retrieveMany(jsonArray, sb.toString())
+                .map(list -> {
+                    List<User> users = new ArrayList<>();
+                    list.forEach(json -> users.add(json.mapTo(User.class)));
+                    return users;
+                })
                 .setHandler(resultHandler);
 
     }
@@ -74,11 +80,12 @@ public class UserService extends JdbcRepositoryWrapper {
      * @param userId
      * @param resultHandler
      */
-    public void userInfo(Long userId, Handler<AsyncResult<JsonObject>> resultHandler){
+    public void userInfo(Long userId, Handler<AsyncResult<User>> resultHandler){
 
         JsonArray params = new JsonArray().add(userId);
         retrieveOne(params, QUERY_USER_ID)
                 .map(option -> option.orElse(null))
+                .map(json -> json.mapTo(User.class))
                 .setHandler(resultHandler);
     }
 

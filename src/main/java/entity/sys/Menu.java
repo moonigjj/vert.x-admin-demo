@@ -3,6 +3,10 @@
  */
 package entity.sys;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import common.CustomDateSerializer;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -34,7 +38,9 @@ public class Menu implements Serializable {
 
     private String remark = "";
 
+    @JsonSerialize(using = CustomDateSerializer.class)
     private Date createTime;
 
+    @JsonSerialize(using = CustomDateSerializer.class)
     private Date updateTime;
 }

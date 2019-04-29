@@ -3,6 +3,10 @@
  */
 package entity.sys;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import common.CustomDateSerializer;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -24,5 +28,6 @@ public class Operation implements Serializable {
 
     private String operation = "";
 
+    @JsonSerialize(using = CustomDateSerializer.class)
     private Date createTime;
 }

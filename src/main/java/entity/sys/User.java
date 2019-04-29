@@ -3,6 +3,10 @@
  */
 package entity.sys;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import common.CustomDateSerializer;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -44,7 +48,9 @@ public class User implements Serializable {
 
     private Integer delFlag = 0;
 
+    @JsonSerialize(using = CustomDateSerializer.class)
     private Date createTime;
 
+    @JsonSerialize(using = CustomDateSerializer.class)
     private Date updateTime;
 }

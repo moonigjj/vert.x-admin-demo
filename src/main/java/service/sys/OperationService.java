@@ -3,6 +3,7 @@
  */
 package service.sys;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -48,7 +49,7 @@ public class OperationService extends JdbcRepositoryWrapper {
      * @param params
      * @param resultHandler
      */
-    public void operationListPage(JsonObject params, int page, int size, Handler<AsyncResult<List<JsonObject>>> resultHandler){
+    public void operationListPage(JsonObject params, int page, int size, Handler<AsyncResult<List<Operation>>> resultHandler){
 
         log.info("start operation list params: {}", params);
         JsonArray jsonArray = new JsonArray();
@@ -60,6 +61,11 @@ public class OperationService extends JdbcRepositoryWrapper {
         sb.append(" order by id desc limit ? offset ?");
         jsonArray.add(size).add(calcPage(page, size));
         retrieveMany(jsonArray, sb.toString())
+                .map(list -> {
+                    List<Operation> operations = new ArrayList<>();
+                    list.forEach(json -> operations.add(json.mapTo(Operation.class)));
+                    return operations;
+                })
                 .setHandler(resultHandler);
 
     }
@@ -69,11 +75,12 @@ public class OperationService extends JdbcRepositoryWrapper {
      * @param operationId
      * @param resultHandler
      */
-    public void operationInfo(Long operationId, Handler<AsyncResult<JsonObject>> resultHandler){
+    public void operationInfo(Long operationId, Handler<AsyncResult<Operation>> resultHandler){
 
         JsonArray params = new JsonArray().add(operationId);
         retrieveOne(params, QUERY_OPERATION_ID)
                 .map(option -> option.orElse(null))
+                .map(json -> json.mapTo(Operation.class))
                 .setHandler(resultHandler);
     }
 

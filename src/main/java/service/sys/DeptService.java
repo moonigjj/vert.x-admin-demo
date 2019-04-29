@@ -3,6 +3,7 @@
  */
 package service.sys;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -54,7 +55,7 @@ public class DeptService extends JdbcRepositoryWrapper {
      * @param params
      * @param resultHandler
      */
-    public void deptListPage(JsonObject params, int page, int size, Handler<AsyncResult<List<JsonObject>>> resultHandler){
+    public void deptListPage(JsonObject params, int page, int size, Handler<AsyncResult<List<Dept>>> resultHandler){
 
         log.info("start dept list params: {}", params);
         JsonArray jsonArray = new JsonArray().add(params.getString("orgId"));
@@ -66,6 +67,11 @@ public class DeptService extends JdbcRepositoryWrapper {
         sb.append(" order by id desc limit ? offset ?");
         jsonArray.add(size).add(calcPage(page, size));
         retrieveMany(jsonArray, sb.toString())
+                .map(list -> {
+                    List<Dept> depts = new ArrayList<>();
+                    list.forEach(json -> depts.add(json.mapTo(Dept.class)));
+                    return depts;
+                })
                 .setHandler(resultHandler);
 
     }
@@ -75,11 +81,12 @@ public class DeptService extends JdbcRepositoryWrapper {
      * @param deptId
      * @param resultHandler
      */
-    public void deptInfo(Long deptId, Handler<AsyncResult<JsonObject>> resultHandler){
+    public void deptInfo(Long deptId, Handler<AsyncResult<Dept>> resultHandler){
 
         JsonArray params = new JsonArray().add(deptId);
         retrieveOne(params, QUERY_DEPT_ID)
                 .map(option -> option.orElse(null))
+                .map(json -> json.mapTo(Dept.class))
                 .setHandler(resultHandler);
     }
 

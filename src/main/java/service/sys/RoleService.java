@@ -3,6 +3,7 @@
  */
 package service.sys;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -54,7 +55,7 @@ public class RoleService extends JdbcRepositoryWrapper {
      * @param params
      * @param resultHandler
      */
-    public void roleListPage(JsonObject params, int page, int size, Handler<AsyncResult<List<JsonObject>>> resultHandler){
+    public void roleListPage(JsonObject params, int page, int size, Handler<AsyncResult<List<Role>>> resultHandler){
 
         log.info("start role list params: {}", params);
         JsonArray jsonArray = new JsonArray().add(params.getString("orgId"));
@@ -66,6 +67,11 @@ public class RoleService extends JdbcRepositoryWrapper {
         sb.append(" order by id desc limit ? offset ?");
         jsonArray.add(size).add(calcPage(page, size));
         retrieveMany(jsonArray, sb.toString())
+                .map(list -> {
+                    List<Role> roles = new ArrayList<>();
+                    list.forEach(json -> roles.add(json.mapTo(Role.class)));
+                    return roles;
+                })
                 .setHandler(resultHandler);
 
     }
@@ -75,11 +81,12 @@ public class RoleService extends JdbcRepositoryWrapper {
      * @param roleId
      * @param resultHandler
      */
-    public void roleInfo(Long roleId, Handler<AsyncResult<JsonObject>> resultHandler){
+    public void roleInfo(Long roleId, Handler<AsyncResult<Role>> resultHandler){
 
         JsonArray params = new JsonArray().add(roleId);
         retrieveOne(params, QUERY_ROLE_ID)
                 .map(option -> option.orElse(null))
+                .map(json -> json.mapTo(Role.class))
                 .setHandler(resultHandler);
     }
 
