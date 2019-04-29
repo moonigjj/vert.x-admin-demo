@@ -16,7 +16,6 @@ import lombok.Data;
 public class ReturnModel<T> implements Serializable {
 
     private boolean suc;
-    private String reason = "";
-
+    private String reason = "操作成功";
     private T result;
 }
