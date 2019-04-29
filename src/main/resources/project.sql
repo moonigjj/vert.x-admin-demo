@@ -1,301 +1,371 @@
-/*
-Navicat MySQL Data Transfer
+-- Drop table
 
-Source Server         : 127.0.0.1
-Source Server Version : 50717
-Source Host           : 127.0.0.1:3306
-Source Database       : dish
+-- DROP TABLE public.sys_app
 
-Target Server Type    : MYSQL
-Target Server Version : 50717
-File Encoding         : 65001
+CREATE TABLE public.sys_app (
+                              id bigserial NOT NULL, -- 主键
+                              "name" text NOT NULL DEFAULT ''::text, -- 名称
+                              url text NOT NULL DEFAULT ''::text, -- 地址
+                              icon text NOT NULL DEFAULT ''::text, -- 图标
+                              status int2 NOT NULL DEFAULT 0, -- 状态0正常，1禁用
+                              remark text NOT NULL DEFAULT ''::text, -- 备注
+                              create_time timestamp NOT NULL, -- 创建时间
+                              update_time timestamp NOT NULL, -- 修改时间
+                              CONSTRAINT sys_app_pk PRIMARY KEY (id)
+);
+COMMENT ON TABLE public.sys_app IS '系统app应用表';
 
-Date: 2018-09-11 10:44:07
-*/
+-- Column comments
 
-SET FOREIGN_KEY_CHECKS=0;
+COMMENT ON COLUMN public.sys_app.id IS '主键';
+COMMENT ON COLUMN public.sys_app."name" IS '名称';
+COMMENT ON COLUMN public.sys_app.url IS '地址';
+COMMENT ON COLUMN public.sys_app.icon IS '图标';
+COMMENT ON COLUMN public.sys_app.status IS '状态0正常，1禁用';
+COMMENT ON COLUMN public.sys_app.remark IS '备注';
+COMMENT ON COLUMN public.sys_app.create_time IS '创建时间';
+COMMENT ON COLUMN public.sys_app.update_time IS '修改时间';
 
--- ----------------------------
--- Table structure for dish_desk
--- ----------------------------
-DROP TABLE IF EXISTS `dish_desk`;
-CREATE TABLE `dish_desk` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'id',
-  `merchant_id` bigint(20) unsigned NOT NULL COMMENT '餐厅id',
-  `desk_num` varchar(20) NOT NULL DEFAULT '' COMMENT '桌子编号',
-  `url` varchar(255) NOT NULL DEFAULT '' COMMENT '二维码地址',
-  `remark` varchar(100) NOT NULL DEFAULT '' COMMENT '描述',
-  `desk_status` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '0空闲，1有人，99作废',
-  `create_time` datetime NOT NULL,
-  `update_time` datetime NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='桌号信息表';
+-- Permissions
 
--- ----------------------------
--- Records of dish_desk
--- ----------------------------
-INSERT INTO `dish_desk` VALUES ('1', '1', '1', 'ssda', '10-12', '0', '2018-06-12 10:21:12', '2018-06-12 10:21:14');
-INSERT INTO `dish_desk` VALUES ('2', '1', '2', 'www.dada.com', '4人', '1', '2018-06-12 08:15:44', '2018-06-13 06:25:32');
-INSERT INTO `dish_desk` VALUES ('3', '1', '3', 'xxxxx', '10-12', '2', '2018-06-12 08:16:10', '2018-06-12 09:37:52');
-INSERT INTO `dish_desk` VALUES ('4', '1', '10A', 'xxxxx', '10-12', '0', '2018-06-12 08:20:59', '2018-06-12 08:20:59');
-INSERT INTO `dish_desk` VALUES ('5', '1', '10B', 'xxxxx', '10-12', '0', '2018-06-12 08:21:13', '2018-06-12 08:21:13');
+ALTER TABLE public.sys_app OWNER TO postgres;
+GRANT ALL ON TABLE public.sys_app TO postgres;
 
--- ----------------------------
--- Table structure for dish_discount
--- ----------------------------
-DROP TABLE IF EXISTS `dish_discount`;
-CREATE TABLE `dish_discount` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'id',
-  `merchant_id` bigint(20) unsigned NOT NULL COMMENT '餐厅id',
-  `discount_name` varchar(20) NOT NULL DEFAULT '' COMMENT '折扣名称',
-  `create_time` datetime NOT NULL COMMENT '创建时间',
-  `update_time` datetime NOT NULL COMMENT '更新时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='折扣表';
 
--- ----------------------------
--- Records of dish_discount
--- ----------------------------
+-- Drop table
 
--- ----------------------------
--- Table structure for dish_food
--- ----------------------------
-DROP TABLE IF EXISTS `dish_food`;
-CREATE TABLE `dish_food` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'id',
-  `merchant_id` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '餐厅id',
-  `dish_name` varchar(50) NOT NULL DEFAULT '' COMMENT '菜品名称',
-  `dish_price` decimal(10,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '菜品单价',
-  `dish_discount_price` decimal(10,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '折扣价',
-  `dish_icon` varchar(500) NOT NULL DEFAULT '' COMMENT '菜品图片',
-  `dish_is_takeout` tinyint(4) unsigned NOT NULL DEFAULT '1' COMMENT '是否支持外卖0不支持，1支持',
-  `remark` varchar(20) NOT NULL DEFAULT '' COMMENT '简介描述',
-  `dish_status` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '0创建，1上架，2下架',
-  `create_time` datetime NOT NULL COMMENT '创建时间',
-  `update_time` datetime NOT NULL COMMENT '更新时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='菜品表';
+-- DROP TABLE public.sys_dept
 
--- ----------------------------
--- Records of dish_food
--- ----------------------------
-INSERT INTO `dish_food` VALUES ('1', '1', '麻辣小龙虾', '138.00', '100.94', 'fff', '1', '正宗潜江小龙虾', '1', '2018-05-21 17:55:59', '2018-05-21 17:56:02');
-INSERT INTO `dish_food` VALUES ('2', '1', '香辣小龙虾', '158.00', '121.86', 'xxx', '1', '正宗口味', '1', '2018-05-22 15:06:42', '2018-05-22 15:06:44');
-INSERT INTO `dish_food` VALUES ('3', '1', '蒜蓉小龙虾', '148.88', '128.88', 'www.dadad.com', '1', '蒜蓉，微辣', '2', '2018-06-14 07:44:25', '2018-06-14 08:39:59');
+CREATE TABLE public.sys_dept (
+                               id bigserial NOT NULL,
+                               org_id int8 NOT NULL DEFAULT 0, -- 组织id
+                               "name" text NOT NULL DEFAULT ''::text, -- 部门名称
+                               "level" int2 NOT NULL DEFAULT 0, -- 等级
+                               remark text NOT NULL DEFAULT ''::text, -- 备注
+                               parent_id int8 NOT NULL DEFAULT 0, -- 上级部门id
+                               del_flag int2 NOT NULL DEFAULT 0, -- 状态0正常,1禁用
+                               create_time timestamp NOT NULL, -- 创建时间
+                               update_time timestamp NOT NULL, -- 更新时间
+                               CONSTRAINT sys_dept_pk PRIMARY KEY (id)
+);
+COMMENT ON TABLE public.sys_dept IS '部门表';
 
--- ----------------------------
--- Table structure for dish_order
--- ----------------------------
-DROP TABLE IF EXISTS `dish_order`;
-CREATE TABLE `dish_order` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'id',
-  `merchant_id` bigint(20) unsigned NOT NULL COMMENT '餐厅id',
-  `order_num` varchar(64) NOT NULL DEFAULT '' COMMENT '对属于一张桌子的菜单的标识',
-  `user_id` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '用户id',
-  `desk_num` varchar(20) NOT NULL DEFAULT '' COMMENT '桌号，记录发出点菜要求的顾客所在桌子',
-  `buyer_name` varchar(64) NOT NULL DEFAULT '' COMMENT '买家名字',
-  `buyer_phone` varchar(32) NOT NULL DEFAULT '' COMMENT '买家电话',
-  `buyer_address` varchar(128) NOT NULL DEFAULT '' COMMENT '买家地址',
-  `dish_amount` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '菜品份数',
-  `dish_price` decimal(10,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '菜品总价',
-  `dish_pay` decimal(10,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '实际付款',
-  `sale_status` tinyint(4) unsigned NOT NULL DEFAULT '1' COMMENT '订单状态1有效 0无效  2完成',
-  `pay_method` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '支付方式0微信支付，1支付宝支付，2现金支付',
-  `pay_status` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '支付状态0待付款，1已付款',
-  `create_time` datetime NOT NULL,
-  `update_time` datetime NOT NULL COMMENT '更新时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COMMENT='菜品销售表';
+-- Column comments
 
--- ----------------------------
--- Records of dish_order
--- ----------------------------
-INSERT INTO `dish_order` VALUES ('1', '1', 'wqeq', '1', '17', '佳佳', '', '', '3', '623.00', '400.00', '2', '0', '1', '2018-05-22 16:54:12', '2018-05-22 16:54:19');
-INSERT INTO `dish_order` VALUES ('2', '1', 'weqeq', '1', '16', 'wenwe', '', '', '2', '435.00', '400.00', '2', '0', '1', '2018-05-24 13:44:13', '2018-05-24 13:44:17');
-INSERT INTO `dish_order` VALUES ('7', '1', '453197861086035968', '1', '1', 'wdq23a', '', '', '4', '296.00', '2018.09', '2', '1', '2', '2018-06-04 06:06:30', '2018-06-04 06:06:30');
-INSERT INTO `dish_order` VALUES ('8', '1', '453200572976201728', '1', '1', 'wdq23a', '', '', '4', '296.00', '2018.09', '2', '1', '2', '2018-06-04 06:17:17', '2018-06-04 06:17:17');
-INSERT INTO `dish_order` VALUES ('9', '1', '453200634133348352', '1', '1', 'wdq23a', '', '', '4', '296.00', '2018.09', '2', '1', '2', '2018-06-04 06:17:31', '2018-06-04 06:17:31');
-INSERT INTO `dish_order` VALUES ('10', '1', '456049911192879104', '1', '1', 'wdq23a', '', '', '4', '296.00', '2018.09', '2', '1', '2', '2018-06-12 02:59:32', '2018-06-12 02:59:32');
+COMMENT ON COLUMN public.sys_dept.org_id IS '组织id';
+COMMENT ON COLUMN public.sys_dept."name" IS '部门名称';
+COMMENT ON COLUMN public.sys_dept."level" IS '等级';
+COMMENT ON COLUMN public.sys_dept.remark IS '备注';
+COMMENT ON COLUMN public.sys_dept.parent_id IS '上级部门id';
+COMMENT ON COLUMN public.sys_dept.del_flag IS '状态0正常,1禁用';
+COMMENT ON COLUMN public.sys_dept.create_time IS '创建时间';
+COMMENT ON COLUMN public.sys_dept.update_time IS '更新时间';
 
--- ----------------------------
--- Table structure for dish_order_detail
--- ----------------------------
-DROP TABLE IF EXISTS `dish_order_detail`;
-CREATE TABLE `dish_order_detail` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'id',
-  `order_num` varchar(64) NOT NULL DEFAULT '' COMMENT '订单号',
-  `dish_id` bigint(20) unsigned NOT NULL DEFAULT '0' COMMENT '菜品id',
-  `dish_name` varchar(64) NOT NULL DEFAULT '' COMMENT '商品名称',
-  `dish_quantity` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '商品数量',
-  `dish_price` decimal(10,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '商品价格',
-  `dish_discount_price` decimal(10,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '折扣价',
-  `dish_icon` varchar(512) NOT NULL DEFAULT '' COMMENT '商品小图',
-  `create_time` datetime NOT NULL,
-  `update_time` datetime NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COMMENT='菜品销售详情表';
+-- Permissions
 
--- ----------------------------
--- Records of dish_order_detail
--- ----------------------------
-INSERT INTO `dish_order_detail` VALUES ('1', 'wqeq', '1', '麻辣小龙虾', '1', '138.00', '106.12', 'ada', '2018-05-22 16:45:39', '2018-05-22 16:45:37');
-INSERT INTO `dish_order_detail` VALUES ('2', 'wqeq', '2', '香辣小龙虾', '2', '316.00', '300.12', 'dsad', '2018-05-22 16:49:27', '2018-05-22 16:49:29');
-INSERT INTO `dish_order_detail` VALUES ('3', '453197861086035968', '1', '麻辣小龙虾', '2', '138.00', '100.94', '', '2018-06-04 06:06:30', '2018-06-04 06:06:30');
-INSERT INTO `dish_order_detail` VALUES ('4', '453197861086035968', '2', '香辣小龙虾', '2', '158.00', '121.86', '', '2018-06-04 06:06:30', '2018-06-04 06:06:30');
-INSERT INTO `dish_order_detail` VALUES ('5', '453200572976201728', '1', '麻辣小龙虾', '2', '138.00', '100.94', '', '2018-06-04 06:17:17', '2018-06-04 06:17:17');
-INSERT INTO `dish_order_detail` VALUES ('6', '453200572976201728', '2', '香辣小龙虾', '2', '158.00', '121.86', '', '2018-06-04 06:17:17', '2018-06-04 06:17:17');
-INSERT INTO `dish_order_detail` VALUES ('7', '453200634133348352', '1', '麻辣小龙虾', '2', '138.00', '100.94', '', '2018-06-04 06:17:31', '2018-06-04 06:17:31');
-INSERT INTO `dish_order_detail` VALUES ('8', '453200634133348352', '2', '香辣小龙虾', '2', '158.00', '121.86', '', '2018-06-04 06:17:31', '2018-06-04 06:17:31');
-INSERT INTO `dish_order_detail` VALUES ('9', '456049911192879104', '1', '麻辣小龙虾', '2', '138.00', '100.94', '', '2018-06-12 02:59:32', '2018-06-12 02:59:32');
-INSERT INTO `dish_order_detail` VALUES ('10', '456049911192879104', '2', '香辣小龙虾', '2', '158.00', '121.86', '', '2018-06-12 02:59:32', '2018-06-12 02:59:32');
+ALTER TABLE public.sys_dept OWNER TO postgres;
+GRANT ALL ON TABLE public.sys_dept TO postgres;
 
--- ----------------------------
--- Table structure for dish_type
--- ----------------------------
-DROP TABLE IF EXISTS `dish_type`;
-CREATE TABLE `dish_type` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'id',
-  `merchant_id` bigint(20) unsigned NOT NULL COMMENT '餐厅id',
-  `type_name` varchar(20) NOT NULL DEFAULT '' COMMENT '分类名称',
-  `type_des` varchar(255) NOT NULL DEFAULT '' COMMENT '描述',
-  `type_level` tinyint(4) unsigned NOT NULL DEFAULT '1' COMMENT '类别级别0是特殊，1是普通',
-  `create_time` datetime NOT NULL COMMENT '创建时间',
-  `update_time` datetime NOT NULL COMMENT '更新时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='菜品分类表';
 
--- ----------------------------
--- Records of dish_type
--- ----------------------------
-INSERT INTO `dish_type` VALUES ('1', '0', '青菜', '季节', '1', '2018-05-17 14:41:10', '2018-05-17 14:41:12');
-INSERT INTO `dish_type` VALUES ('2', '0', '套餐', '工作套餐，物美价廉', '1', '2018-05-17 14:42:02', '2018-05-17 14:42:04');
+-- Drop table
 
--- ----------------------------
--- Table structure for dish_variety
--- ----------------------------
-DROP TABLE IF EXISTS `dish_variety`;
-CREATE TABLE `dish_variety` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'id',
-  `variety_name` varchar(20) NOT NULL DEFAULT '' COMMENT '口味名称',
-  `create_time` datetime NOT NULL COMMENT '创建时间',
-  `update_time` datetime NOT NULL COMMENT '更新时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='菜品口味表';
+-- DROP TABLE public.sys_dept_role
 
--- ----------------------------
--- Records of dish_variety
--- ----------------------------
-INSERT INTO `dish_variety` VALUES ('1', '微辣', '2018-05-21 15:34:06', '2018-05-21 15:34:09');
-INSERT INTO `dish_variety` VALUES ('2', '中辣', '2018-05-21 15:34:28', '2018-05-21 15:34:30');
-INSERT INTO `dish_variety` VALUES ('3', '辣', '2018-05-21 15:34:40', '2018-05-21 15:34:43');
-INSERT INTO `dish_variety` VALUES ('4', '香辣', '2018-05-21 15:34:54', '2018-05-21 15:34:56');
-INSERT INTO `dish_variety` VALUES ('5', '麻辣', '2018-05-21 15:35:05', '2018-05-21 15:35:07');
+CREATE TABLE public.sys_dept_role (
+                                    id bigserial NOT NULL,
+                                    dept_id int8 NOT NULL DEFAULT 0, -- 部门id
+                                    role_id int8 NOT NULL DEFAULT 0, -- 角色id
+                                    create_time timestamp NOT NULL, -- 创建时间
+                                    CONSTRAINT sys_dept_role_pk PRIMARY KEY (id)
+);
+COMMENT ON TABLE public.sys_dept_role IS '部门角色关联表';
 
--- ----------------------------
--- Table structure for dish_weixin_account
--- ----------------------------
-DROP TABLE IF EXISTS `dish_weixin_account`;
-CREATE TABLE `dish_weixin_account` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'id',
-  `merchant_id` bigint(20) unsigned NOT NULL COMMENT '餐厅id',
-  `openid` varchar(20) NOT NULL DEFAULT '' COMMENT '微信openid',
-  `nick_name` varchar(64) NOT NULL DEFAULT '' COMMENT '微信呢称',
-  `url` varchar(255) NOT NULL DEFAULT '' COMMENT '微信头像地址',
-  `salt` varchar(20) NOT NULL DEFAULT '' COMMENT '加密盐',
-  `login_time` datetime NOT NULL COMMENT '登录时间',
-  `create_time` datetime NOT NULL COMMENT '创建时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+-- Column comments
 
--- ----------------------------
--- Records of dish_weixin_account
--- ----------------------------
-INSERT INTO `dish_weixin_account` VALUES ('1', '0', 'dawdadad21231', 'wdq23a', 'adaw', '6666666', '2018-05-22 16:41:27', '2018-05-22 16:41:31');
+COMMENT ON COLUMN public.sys_dept_role.dept_id IS '部门id';
+COMMENT ON COLUMN public.sys_dept_role.role_id IS '角色id';
+COMMENT ON COLUMN public.sys_dept_role.create_time IS '创建时间';
 
--- ----------------------------
--- Table structure for mer_type
--- ----------------------------
-DROP TABLE IF EXISTS `mer_type`;
-CREATE TABLE `mer_type` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'id',
-  `type_name` varchar(20) NOT NULL DEFAULT '' COMMENT '商户类型名称',
-  `type_dec` varchar(255) NOT NULL DEFAULT '' COMMENT '类型描述',
-  `create_time` datetime NOT NULL COMMENT '创建时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+-- Permissions
 
--- ----------------------------
--- Records of mer_type
--- ----------------------------
+ALTER TABLE public.sys_dept_role OWNER TO postgres;
+GRANT ALL ON TABLE public.sys_dept_role TO postgres;
 
--- ----------------------------
--- Table structure for merchants
--- ----------------------------
-DROP TABLE IF EXISTS `merchants`;
-CREATE TABLE `merchants` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'id',
-  `mer_name` varchar(100) NOT NULL DEFAULT '' COMMENT '餐馆名称',
-  `nation` varchar(20) NOT NULL DEFAULT '' COMMENT '所在国家',
-  `province` varchar(20) NOT NULL DEFAULT '' COMMENT '所在省',
-  `city` varchar(20) NOT NULL DEFAULT '' COMMENT '所在城市',
-  `address` varchar(255) NOT NULL DEFAULT '' COMMENT '街道',
-  `mer_dec` varchar(255) NOT NULL DEFAULT '' COMMENT '商家描述',
-  `mer_type` tinyint(4) unsigned NOT NULL DEFAULT '0' COMMENT '餐馆类型',
-  `mer_phone` varchar(20) NOT NULL DEFAULT '' COMMENT '商户电话',
-  `mer_url` varchar(500) NOT NULL DEFAULT '' COMMENT '图片地址',
-  `mer_begin_time` varchar(20) NOT NULL DEFAULT '' COMMENT '营业时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='商户信息表';
 
--- ----------------------------
--- Records of merchants
--- ----------------------------
-INSERT INTO `merchants` VALUES ('1', '佳佳菜馆', '中国', '浙江省', '临海', '山前村', '正宗潜江小龙虾', '0', '13471231123', 'ef', '2018-05-22');
+-- Drop table
 
--- ----------------------------
--- Table structure for pay_log
--- ----------------------------
-DROP TABLE IF EXISTS `pay_log`;
-CREATE TABLE `pay_log` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'id',
-  `customer_token` varchar(20) NOT NULL DEFAULT '' COMMENT '客户标识',
-  `order_num` varchar(50) NOT NULL DEFAULT '' COMMENT '订单编号',
-  `third_sn` varchar(50) NOT NULL DEFAULT '' COMMENT '第三方支付编号',
-  `pay_time` datetime NOT NULL COMMENT '支付时间',
-  `pay_method` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '支付方式',
-  `pay_status` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '支付状态',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='支付流水表';
+-- DROP TABLE public.sys_menu
 
--- ----------------------------
--- Records of pay_log
--- ----------------------------
+CREATE TABLE public.sys_menu (
+                               id bigserial NOT NULL,
+                               parent_id int8 NOT NULL DEFAULT 0, -- 父级id
+                               "name" text NOT NULL DEFAULT ''::text, -- 菜单名称
+                               url text NOT NULL DEFAULT ''::text, -- 菜单地址
+                               icon text NOT NULL DEFAULT ''::text, -- 菜单图标
+                               sort_num int2 NOT NULL DEFAULT 0, -- 排序字段
+                               status int2 NOT NULL DEFAULT 0, -- 状态0正常1禁用
+                               remark text NOT NULL DEFAULT ''::text, -- 备注
+                               create_time timestamp NOT NULL, -- 创建时间
+                               update_time timestamp NOT NULL, -- 更新时间
+                               CONSTRAINT sys_menu_pk PRIMARY KEY (id)
+);
+COMMENT ON TABLE public.sys_menu IS '菜单资源表';
 
--- ----------------------------
--- Table structure for wx_cms_fans
--- ----------------------------
-DROP TABLE IF EXISTS `wx_cms_fans`;
-CREATE TABLE `wx_cms_fans` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'id',
-  `open_id` varchar(100) NOT NULL DEFAULT '' COMMENT '微信open_id',
-  `sub_status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '订阅状态，0取消订阅，1订阅',
-  `sub_time` varchar(50) NOT NULL DEFAULT '' COMMENT '订阅时间',
-  `nick_name` varchar(50) NOT NULL DEFAULT '' COMMENT '昵称',
-  `gender` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '性别',
-  `language` varchar(50) NOT NULL DEFAULT '' COMMENT '语言',
-  `country` varchar(30) NOT NULL DEFAULT '' COMMENT '国家',
-  `province` varchar(30) NOT NULL DEFAULT '' COMMENT '省',
-  `city` varchar(30) NOT NULL DEFAULT '' COMMENT '城市',
-  `head_img` varchar(255) NOT NULL DEFAULT '' COMMENT '头像url',
-  `status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '状态',
-  `remark` varchar(50) NOT NULL DEFAULT '' COMMENT '备注',
-  `weixin_id` varchar(50) NOT NULL DEFAULT '' COMMENT '微信id',
-  `account` varchar(100) NOT NULL DEFAULT '' COMMENT '微信账号',
-  `create_time` datetime NOT NULL COMMENT '创建时间',
-  `update_time` datetime NOT NULL COMMENT '更新时间',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='微信粉丝信息表';
+-- Column comments
 
--- ----------------------------
--- Records of wx_cms_fans
--- ----------------------------
+COMMENT ON COLUMN public.sys_menu.parent_id IS '父级id';
+COMMENT ON COLUMN public.sys_menu."name" IS '菜单名称';
+COMMENT ON COLUMN public.sys_menu.url IS '菜单地址';
+COMMENT ON COLUMN public.sys_menu.icon IS '菜单图标';
+COMMENT ON COLUMN public.sys_menu.sort_num IS '排序字段';
+COMMENT ON COLUMN public.sys_menu.status IS '状态0正常1禁用';
+COMMENT ON COLUMN public.sys_menu.remark IS '备注';
+COMMENT ON COLUMN public.sys_menu.create_time IS '创建时间';
+COMMENT ON COLUMN public.sys_menu.update_time IS '更新时间';
+
+-- Permissions
+
+ALTER TABLE public.sys_menu OWNER TO postgres;
+GRANT ALL ON TABLE public.sys_menu TO postgres;
+
+-- Drop table
+
+-- DROP TABLE public.sys_operation
+
+CREATE TABLE public.sys_operation (
+                                    id bigserial NOT NULL,
+                                    "name" text NOT NULL DEFAULT ''::text, -- 操作名称
+                                    operation text NOT NULL DEFAULT ''::text, -- 操作标志
+                                    create_time timestamp NOT NULL, -- 创建时间
+                                    CONSTRAINT sys_operation_pk PRIMARY KEY (id)
+);
+COMMENT ON TABLE public.sys_operation IS '操作表';
+
+-- Column comments
+
+COMMENT ON COLUMN public.sys_operation."name" IS '操作名称';
+COMMENT ON COLUMN public.sys_operation.operation IS '操作标志';
+COMMENT ON COLUMN public.sys_operation.create_time IS '创建时间';
+
+-- Permissions
+
+ALTER TABLE public.sys_operation OWNER TO postgres;
+GRANT ALL ON TABLE public.sys_operation TO postgres;
+
+-- Drop table
+
+-- DROP TABLE public.sys_org
+
+CREATE TABLE public.sys_org (
+                              id bigserial NOT NULL,
+                              parent_id int8 NOT NULL DEFAULT 0, -- 上级公司id
+                              code text NOT NULL DEFAULT ''::text, -- 简称
+                              "name" text NOT NULL DEFAULT ''::text, -- 公司名字
+                              address text NOT NULL DEFAULT ''::text, -- 地址
+                              contact text NOT NULL DEFAULT ''::text, -- 联系人
+                              contact_number text NOT NULL DEFAULT ''::text, -- 联系电话
+                              del_flag int2 NOT NULL DEFAULT 0, -- 是否删除0否1是
+                              create_time timestamp NOT NULL, -- 创建时间
+                              update_time timestamp NOT NULL, -- 更新时间
+                              CONSTRAINT sys_org_pk PRIMARY KEY (id)
+);
+COMMENT ON TABLE public.sys_org IS '组织机构表';
+
+-- Column comments
+
+COMMENT ON COLUMN public.sys_org.parent_id IS '上级公司id';
+COMMENT ON COLUMN public.sys_org.code IS '简称';
+COMMENT ON COLUMN public.sys_org."name" IS '公司名字';
+COMMENT ON COLUMN public.sys_org.address IS '地址';
+COMMENT ON COLUMN public.sys_org.contact IS '联系人';
+COMMENT ON COLUMN public.sys_org.contact_number IS '联系电话';
+COMMENT ON COLUMN public.sys_org.del_flag IS '是否删除0否1是';
+COMMENT ON COLUMN public.sys_org.create_time IS '创建时间';
+COMMENT ON COLUMN public.sys_org.update_time IS '更新时间';
+
+-- Permissions
+
+ALTER TABLE public.sys_org OWNER TO postgres;
+GRANT ALL ON TABLE public.sys_org TO postgres;
+
+-- Drop table
+
+-- DROP TABLE public.sys_permission
+
+CREATE TABLE public.sys_permission (
+                                     id bigserial NOT NULL,
+                                     "name" text NOT NULL DEFAULT ''::text, -- 权限名称 英文
+                                     remark text NOT NULL DEFAULT ''::text, -- 备注
+                                     create_time timestamp NOT NULL, -- 创建时间
+                                     CONSTRAINT sys_permission_pk PRIMARY KEY (id)
+);
+COMMENT ON TABLE public.sys_permission IS '权限表';
+
+-- Column comments
+
+COMMENT ON COLUMN public.sys_permission."name" IS '权限名称 英文';
+COMMENT ON COLUMN public.sys_permission.remark IS '备注';
+COMMENT ON COLUMN public.sys_permission.create_time IS '创建时间';
+
+-- Permissions
+
+ALTER TABLE public.sys_permission OWNER TO postgres;
+GRANT INSERT, SELECT, UPDATE, DELETE ON TABLE public.sys_permission TO postgres;
+
+
+-- Drop table
+
+-- DROP TABLE public.sys_role
+
+CREATE TABLE public.sys_role (
+                               id bigserial NOT NULL,
+                               parent_id int8 NOT NULL DEFAULT 0, -- 上级id
+                               org_id int8 NOT NULL DEFAULT 0, -- 组织Id
+                               "name" text NOT NULL DEFAULT ''::text, -- 角色名
+                               remark text NOT NULL DEFAULT ''::text, -- 备注
+                               del_flag int2 NOT NULL DEFAULT 0, -- 0正常， 1删除
+                               create_time timestamp NOT NULL, -- 创建时间
+                               update_time timestamp NOT NULL, -- 更新时间
+                               CONSTRAINT sys_role_pk PRIMARY KEY (id)
+);
+COMMENT ON TABLE public.sys_role IS '角色表';
+
+-- Column comments
+
+COMMENT ON COLUMN public.sys_role.parent_id IS '上级id';
+COMMENT ON COLUMN public.sys_role.org_id IS '组织Id';
+COMMENT ON COLUMN public.sys_role."name" IS '角色名';
+COMMENT ON COLUMN public.sys_role.remark IS '备注';
+COMMENT ON COLUMN public.sys_role.del_flag IS '0正常， 1删除';
+COMMENT ON COLUMN public.sys_role.create_time IS '创建时间';
+COMMENT ON COLUMN public.sys_role.update_time IS '更新时间';
+
+-- Permissions
+
+ALTER TABLE public.sys_role OWNER TO postgres;
+GRANT ALL ON TABLE public.sys_role TO postgres;
+
+
+-- Drop table
+
+-- DROP TABLE public.sys_role_permission
+
+CREATE TABLE public.sys_role_permission (
+                                          id bigserial NOT NULL,
+                                          role_id int8 NOT NULL DEFAULT 0, -- 角色id
+                                          permission_id int8 NOT NULL DEFAULT 0, -- 权限id
+                                          create_time timestamp NOT NULL, -- 创建时间
+                                          CONSTRAINT sys_role_permission_pk PRIMARY KEY (id)
+);
+COMMENT ON TABLE public.sys_role_permission IS '角色权限关联';
+
+-- Column comments
+
+COMMENT ON COLUMN public.sys_role_permission.role_id IS '角色id';
+COMMENT ON COLUMN public.sys_role_permission.permission_id IS '权限id';
+COMMENT ON COLUMN public.sys_role_permission.create_time IS '创建时间';
+
+-- Permissions
+
+ALTER TABLE public.sys_role_permission OWNER TO postgres;
+GRANT ALL ON TABLE public.sys_role_permission TO postgres;
+
+
+-- Drop table
+
+-- DROP TABLE public.sys_user
+
+CREATE TABLE public.sys_user (
+                               id bigserial NOT NULL,
+                               user_name text NOT NULL DEFAULT ''::text, -- 登录用户名
+                               real_name text NOT NULL DEFAULT ''::text, -- 真实姓名
+                               nick_name text NOT NULL DEFAULT ''::text, -- 昵称
+                               avatar text NOT NULL DEFAULT ''::text, -- 头像
+                               pwd text NOT NULL DEFAULT ''::text, -- 登录密码
+                               salt text NOT NULL DEFAULT ''::text, -- 加密盐
+                               org_id int8 NOT NULL DEFAULT 0, -- 组织id
+                               open_id text NOT NULL DEFAULT ''::text, -- 微信open_id
+                               union_id text NOT NULL DEFAULT ''::text, -- 微信union_id
+                               status int2 NOT NULL DEFAULT 0, -- 状态，1正常，0禁用，
+                               online int2 NOT NULL DEFAULT 0, -- 是否在线0否1是
+                               del_flag int2 NOT NULL DEFAULT 0, -- 是否删除0正常1删除
+                               create_time timestamp NOT NULL, -- 创建时间
+                               update_time timestamp NOT NULL, -- 更新时间
+                               CONSTRAINT sys_user_pk PRIMARY KEY (id)
+);
+COMMENT ON TABLE public.sys_user IS '用户基本信息表';
+
+-- Column comments
+
+COMMENT ON COLUMN public.sys_user.user_name IS '登录用户名';
+COMMENT ON COLUMN public.sys_user.real_name IS '真实姓名';
+COMMENT ON COLUMN public.sys_user.nick_name IS '昵称';
+COMMENT ON COLUMN public.sys_user.avatar IS '头像';
+COMMENT ON COLUMN public.sys_user.pwd IS '登录密码';
+COMMENT ON COLUMN public.sys_user.salt IS '加密盐';
+COMMENT ON COLUMN public.sys_user.org_id IS '组织id';
+COMMENT ON COLUMN public.sys_user.open_id IS '微信open_id';
+COMMENT ON COLUMN public.sys_user.union_id IS '微信union_id';
+COMMENT ON COLUMN public.sys_user.status IS '状态，1正常，0禁用，';
+COMMENT ON COLUMN public.sys_user.online IS '是否在线0否1是';
+COMMENT ON COLUMN public.sys_user.del_flag IS '是否删除0正常1删除';
+COMMENT ON COLUMN public.sys_user.create_time IS '创建时间';
+COMMENT ON COLUMN public.sys_user.update_time IS '更新时间';
+
+-- Permissions
+
+ALTER TABLE public.sys_user OWNER TO postgres;
+GRANT ALL ON TABLE public.sys_user TO postgres;
+
+
+-- Drop table
+
+-- DROP TABLE public.sys_user_dept
+
+CREATE TABLE public.sys_user_dept (
+                                    id bigserial NOT NULL,
+                                    user_id int8 NOT NULL DEFAULT 0, -- 用户id
+                                    dept_id int8 NOT NULL DEFAULT 0, -- 部门id
+                                    create_time timestamp NOT NULL, -- 创建时间
+                                    CONSTRAINT sys_user_dept_pk PRIMARY KEY (id)
+);
+COMMENT ON TABLE public.sys_user_dept IS '用户部门关联表';
+
+-- Column comments
+
+COMMENT ON COLUMN public.sys_user_dept.user_id IS '用户id';
+COMMENT ON COLUMN public.sys_user_dept.dept_id IS '部门id';
+COMMENT ON COLUMN public.sys_user_dept.create_time IS '创建时间';
+
+-- Permissions
+
+ALTER TABLE public.sys_user_dept OWNER TO postgres;
+GRANT ALL ON TABLE public.sys_user_dept TO postgres;
+
+
+-- Drop table
+
+-- DROP TABLE public.sys_user_role
+
+CREATE TABLE public.sys_user_role (
+                                    id bigserial NOT NULL,
+                                    user_id int8 NOT NULL DEFAULT 0, -- 用户id
+                                    role_id int8 NOT NULL DEFAULT 0, -- 角色id
+                                    create_time timestamp NOT NULL, -- 创建时间
+                                    CONSTRAINT sys_user_role_pk PRIMARY KEY (id)
+);
+COMMENT ON TABLE public.sys_user_role IS '用户角色关联表';
+
+-- Column comments
+
+COMMENT ON COLUMN public.sys_user_role.user_id IS '用户id';
+COMMENT ON COLUMN public.sys_user_role.role_id IS '角色id';
+COMMENT ON COLUMN public.sys_user_role.create_time IS '创建时间';
+
+-- Permissions
+
+ALTER TABLE public.sys_user_role OWNER TO postgres;
+GRANT ALL ON TABLE public.sys_user_role TO postgres;
+
+
+
