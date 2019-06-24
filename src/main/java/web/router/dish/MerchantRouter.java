@@ -1,7 +1,7 @@
 /**
  * chenxitech.cn Inc. Copyright (c) 2017-2018 All Rights Reserved.
  */
-package web.router;
+package web.router.dish;
 
 import lombok.extern.slf4j.Slf4j;
 import web.ApiRouter;

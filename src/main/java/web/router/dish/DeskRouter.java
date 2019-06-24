@@ -1,16 +1,16 @@
 /**
  * chenxitech.cn Inc. Copyright (c) 2017-2018 All Rights Reserved.
  */
-package web.router;
+package web.router.dish;
 
 import java.util.Objects;
 
-import entity.Desk;
+import entity.dish.Desk;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import lombok.extern.slf4j.Slf4j;
-import service.DeskService;
+import service.dish.DeskService;
 import utils.CodeEnum;
 import utils.StrUtil;
 import web.ApiRouter;

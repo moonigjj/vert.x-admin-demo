@@ -1,14 +1,14 @@
 /**
  * chenxitech.cn Inc. Copyright (c) 2017-2018 All Rights Reserved.
  */
-package service;
+package service.dish;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
 import db.JdbcRepositoryWrapper;
-import entity.DishFood;
+import entity.dish.DishFood;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonArray;

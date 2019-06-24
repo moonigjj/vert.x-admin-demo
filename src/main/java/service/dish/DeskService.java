@@ -1,14 +1,14 @@
 /**
  * chenxitech.cn Inc. Copyright (c) 2017-2018 All Rights Reserved.
  */
-package service;
+package service.dish;
 
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
 import db.JdbcRepositoryWrapper;
-import entity.Desk;
+import entity.dish.Desk;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.json.JsonArray;
@@ -28,17 +28,17 @@ import web.ApiRouter;
 @Slf4j
 public class DeskService extends JdbcRepositoryWrapper {
 
-    private static final String BASE = "id , merchant_id merchantId, desk_num deskNum, url, remark, desk_status deskStatus, DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%s') updateTime";
+    private static final String BASE = "id , org_id orgId, desk_num deskNum, url, remark, desk_status deskStatus, DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%s') updateTime";
 
     private static final String QUERY_ALL_PAGE = "SELECT "+ BASE +" FROM dish_desk ";
 
     private static final String QUERY_DESK_ID = "SELECT "+ BASE +" FROM dish_desk where id = ?";
 
     private static final String QUERY_DESK_NUM = "SELECT "+ BASE +" FROM dish_desk " +
-            "where merchant_id = ? and desk_num = ?";
+            "where org_id = ? and desk_num = ?";
 
     private static final String INSERT_DESK = "INSERT INTO dish_desk " +
-            "(merchant_id, desk_num, url, remark, desk_status, create_time, update_time) " +
+            "(org_id, desk_num, url, remark, desk_status, create_time, update_time) " +
             "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
     private static final String UPDATE_DESK = "UPDATE dish_desk SET ";
@@ -54,7 +54,7 @@ public class DeskService extends JdbcRepositoryWrapper {
     public void deskListPage(JsonObject params, int page, int size, Handler<AsyncResult<List<JsonObject>>> resultHandler){
 
         log.info("start desk list params: {}", params);
-        JsonArray jsonArray = new JsonArray().add(params.getString("merchantId"));
+        JsonArray jsonArray = new JsonArray().add(params.getString("orgId"));
         StringBuffer sb = new StringBuffer(QUERY_ALL_PAGE);
         if (StrUtil.isNotBlank(params.getString("deskNum"))){
             sb.append(" and desk_num = ?");
@@ -92,7 +92,7 @@ public class DeskService extends JdbcRepositoryWrapper {
         desk.setUpdateTime(now);
         JsonArray jsonArray = DeskConverter.toJsonArray(desk);
         log.info("insert desk info: {}", jsonArray);
-        JsonArray params = new JsonArray().add(desk.getMerchantId()).add(desk.getDeskNum());
+        JsonArray params = new JsonArray().add(desk.getOrgId()).add(desk.getDeskNum());
         retrieveOne(params, QUERY_DESK_NUM)
                 .setHandler(d -> {
                     if (d.succeeded()){
@@ -133,7 +133,7 @@ public class DeskService extends JdbcRepositoryWrapper {
         log.info("update desk sql: {}", sb);
 
         if (Objects.nonNull(desk.getDeskNum())) {
-            JsonArray params = new JsonArray().add(desk.getMerchantId()).add(desk.getDeskNum());
+            JsonArray params = new JsonArray().add(desk.getOrgId()).add(desk.getDeskNum());
             retrieveOne(params, QUERY_DESK_NUM)
                     .setHandler(d -> {
                         if (d.succeeded()) {

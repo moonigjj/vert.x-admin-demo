@@ -1,7 +1,7 @@
 /**
  * chenxitech.cn Inc. Copyright (c) 2017-2018 All Rights Reserved.
  */
-package service;
+package service.dish;
 
 import java.util.List;
 

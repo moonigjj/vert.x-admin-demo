@@ -5,7 +5,7 @@ package service.converter;
 
 import java.util.Objects;
 
-import entity.DishFood;
+import entity.dish.DishFood;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 

@@ -1,7 +1,7 @@
 /**
  * chenxitech.cn Inc. Copyright (c) 2017-2018 All Rights Reserved.
  */
-package entity;
+package entity.dish;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -21,7 +21,7 @@ public class DishFood implements Serializable {
 
     private Long id;
 
-    private Long merchantId;
+    private Long org;
 
     private String dishName;
 

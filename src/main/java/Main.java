@@ -48,7 +48,7 @@ public class Main {
                 JsonObject result = ar.result();
                 //
                 initComponents(result);
-                deploy(vertx, ServiceLauncher.class, new DeploymentOptions());
+                deploy(vertx, AdminClientServer.class, new DeploymentOptions().setWorkerPoolSize(8));
             }
 
         });
@@ -60,7 +60,7 @@ public class Main {
         NetworkUtil.init();
     }
 
-    public static class ServiceLauncher extends AbstractVerticle {
+    /*public static class ServiceLauncher extends AbstractVerticle {
 
         @Override
         public void start(Future<Void> startFuture) {
@@ -82,7 +82,7 @@ public class Main {
 
 
     }
-
+*/
     private static Future<Void> deploy(Vertx vertx, Class verticle, DeploymentOptions opts){
         Future<Void> done = Future.future();
         String deploymentName = "dish-admin:" + verticle.getName();

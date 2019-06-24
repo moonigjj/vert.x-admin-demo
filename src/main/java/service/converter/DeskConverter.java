@@ -5,7 +5,7 @@ package service.converter;
 
 import java.util.Objects;
 
-import entity.Desk;
+import entity.dish.Desk;
 import io.vertx.core.json.JsonArray;
 
 /**

@@ -1,7 +1,7 @@
 /**
  * chenxitech.cn Inc. Copyright (c) 2017-2018 All Rights Reserved.
  */
-package entity;
+package entity.dish;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -20,7 +20,7 @@ public class Desk implements Serializable {
 
     private Long id;
 
-    private Long merchantId;
+    private Long orgId;
 
     private String deskNum;
 
