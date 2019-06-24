@@ -26,7 +26,7 @@ public class Permission implements Serializable {
 
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "权限名称不能为空")
     private String name;
 
     private String remark = "";

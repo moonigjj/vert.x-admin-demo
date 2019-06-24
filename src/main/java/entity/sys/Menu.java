@@ -10,6 +10,8 @@ import common.CustomDateSerializer;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.validation.constraints.NotBlank;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -26,6 +28,7 @@ public class Menu implements Serializable {
 
     private Long parentId = 0L;
 
+    @NotBlank(message = "菜单名称不能为空")
     private String name;
 
     private String url = "";

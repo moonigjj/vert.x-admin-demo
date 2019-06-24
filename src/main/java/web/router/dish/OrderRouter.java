@@ -51,7 +51,7 @@ public final class OrderRouter extends ApiRouter {
             Integer page = StrUtil.isNumber(pageNum) ? Integer.parseInt(pageNum) : 1;
             Integer size = StrUtil.isNumber(pageSize) ? Integer.parseInt(pageSize) : 10;
             JsonObject jsonObject = new JsonObject().put("orgId", orgId)
-                    .put("orderNum", context.request().getParam("orderNum"));
+                    .put("sn", context.request().getParam("sn"));
             this.orderService.orderListPage(jsonObject, page, size, resultHandlerNonEmpty(context));
         }
     }

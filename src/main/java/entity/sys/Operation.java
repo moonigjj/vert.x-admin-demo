@@ -10,6 +10,8 @@ import common.CustomDateSerializer;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.validation.constraints.NotBlank;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -24,6 +26,7 @@ public class Operation implements Serializable {
 
     private Long id;
 
+    @NotBlank(message = "操作名称不能为空")
     private String name;
 
     private String operation = "";

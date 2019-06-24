@@ -10,6 +10,9 @@ import common.CustomDateSerializer;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -26,8 +29,10 @@ public class Role implements Serializable {
 
     private Long parentId = 0L;
 
+    @NotNull
     private Long orgId;
 
+    @NotBlank(message = "角色名称不能为空")
     private String name;
 
     private String remark = "";

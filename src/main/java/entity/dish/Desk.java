@@ -3,6 +3,10 @@
  */
 package entity.dish;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import common.CustomDateSerializer;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -30,7 +34,9 @@ public class Desk implements Serializable {
 
     private Integer deskStatus = 0;
 
+    @JsonSerialize(using = CustomDateSerializer.class)
     private Date createTime;
 
+    @JsonSerialize(using = CustomDateSerializer.class)
     private Date updateTime;
 }

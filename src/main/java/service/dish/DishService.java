@@ -29,7 +29,7 @@ import web.ApiRouter;
 public class DishService extends JdbcRepositoryWrapper {
 
     private static final String BASE = "id , org_id orgId, dish_name dishName, dish_price dishPrice, dish_discount_price dishDiscountPrice," +
-            " dish_icon dishIcon, dish_is_takeout dishTakeout, remark, dish_status dishStatus, DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%s') updateTime";
+            " dish_icon dishIcon, dish_is_takeout dishTakeout, remark, dish_status dishStatus, update_time as updateTime";
 
     private static final String QUERY_ALL_PAGE = "SELECT "+ BASE +" FROM dish_food ";
 

@@ -1,16 +1,15 @@
 /**
  * chenxitech.cn Inc. Copyright (c) 2017-2019 All Rights Reserved.
  */
-package entity.sys;
+package entity.dish;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import common.CustomDateSerializer;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
-
-import javax.validation.constraints.NotBlank;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,28 +17,33 @@ import lombok.NoArgsConstructor;
 /**
  *
  * @author tangyue
- * @version $Id: Org.java, v 0.1 2019-02-10 14:25 tangyue Exp $$
+ * @version $Id: Order.java, v 0.1 2019-06-24 15:42 tangyue Exp $$
  */
 @Data
 @NoArgsConstructor
-public class Org implements Serializable {
+public class Order implements Serializable {
 
     private Long id;
 
-    private Long parentId = 0L;
+    private Long orgId;
 
-    private String code;
+    private String sn;
 
-    @NotBlank(message = "公司名称不能为空")
-    private String name;
+    private Long userId;
 
-    private String address = "";
+    private String deskNum;
 
-    private String contact = "";
+    private BigDecimal orderAmount;
 
-    private String contactName = "";
+    private BigDecimal orderPrice;
 
-    private Integer delFlag = 0;
+    private BigDecimal orderPay;
+
+    private Integer orderStatus;
+
+    private Integer payStatus;
+
+    private Integer payMethod;
 
     @JsonSerialize(using = CustomDateSerializer.class)
     private Date createTime;

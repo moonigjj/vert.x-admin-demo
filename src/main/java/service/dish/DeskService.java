@@ -3,6 +3,7 @@
  */
 package service.dish;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -28,20 +29,20 @@ import web.ApiRouter;
 @Slf4j
 public class DeskService extends JdbcRepositoryWrapper {
 
-    private static final String BASE = "id , org_id orgId, desk_num deskNum, url, remark, desk_status deskStatus, DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%s') updateTime";
+    private static final String BASE = "id , org_id, desk_num, url, remark, desk_status, update_time";
 
-    private static final String QUERY_ALL_PAGE = "SELECT "+ BASE +" FROM dish_desk ";
+    private static final String QUERY_ALL_PAGE = "SELECT "+ BASE +" FROM d_desk ";
 
-    private static final String QUERY_DESK_ID = "SELECT "+ BASE +" FROM dish_desk where id = ?";
+    private static final String QUERY_DESK_ID = "SELECT "+ BASE +" FROM d_desk where id = ?";
 
-    private static final String QUERY_DESK_NUM = "SELECT "+ BASE +" FROM dish_desk " +
+    private static final String QUERY_DESK_NUM = "SELECT "+ BASE +" FROM d_desk " +
             "where org_id = ? and desk_num = ?";
 
-    private static final String INSERT_DESK = "INSERT INTO dish_desk " +
+    private static final String INSERT_DESK = "INSERT INTO d_desk " +
             "(org_id, desk_num, url, remark, desk_status, create_time, update_time) " +
             "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-    private static final String UPDATE_DESK = "UPDATE dish_desk SET ";
+    private static final String UPDATE_DESK = "UPDATE d_desk SET ";
 
     private static final String UPDATE_DESK_STATUS = UPDATE_DESK +
             "desk_status = ?, update_time = ? where id = ?";
@@ -51,7 +52,7 @@ public class DeskService extends JdbcRepositoryWrapper {
      * @param params
      * @param resultHandler
      */
-    public void deskListPage(JsonObject params, int page, int size, Handler<AsyncResult<List<JsonObject>>> resultHandler){
+    public void deskListPage(JsonObject params, int page, int size, Handler<AsyncResult<List<Desk>>> resultHandler){
 
         log.info("start desk list params: {}", params);
         JsonArray jsonArray = new JsonArray().add(params.getString("orgId"));
@@ -63,6 +64,11 @@ public class DeskService extends JdbcRepositoryWrapper {
         sb.append(" order by update_time desc limit ?, ?");
         jsonArray.add(calcPage(page, size)).add(size);
         retrieveMany(jsonArray, sb.toString())
+                .map(list -> {
+                    List<Desk> desks = new ArrayList<>();
+                    list.forEach(json -> desks.add(json.mapTo(Desk.class)));
+                    return desks;
+                })
                 .setHandler(resultHandler);
 
     }
@@ -72,11 +78,12 @@ public class DeskService extends JdbcRepositoryWrapper {
      * @param deskId
      * @param resultHandler
      */
-    public void deskInfo(String deskId, Handler<AsyncResult<JsonObject>> resultHandler){
+    public void deskInfo(String deskId, Handler<AsyncResult<Desk>> resultHandler){
 
         JsonArray params = new JsonArray().add(deskId);
         retrieveOne(params, QUERY_DESK_ID)
                 .map(option -> option.orElse(null))
+                .map(d -> d.mapTo(Desk.class))
                 .setHandler(resultHandler);
     }
 
