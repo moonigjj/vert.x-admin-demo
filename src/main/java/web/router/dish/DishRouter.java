@@ -33,7 +33,7 @@ public final class DishRouter extends ApiRouter {
 
     private DishRouter(){
 
-        this.router.get("/list/:merchantId").handler(this::dishListPage);
+        this.router.get("/list/:orgId").handler(this::dishListPage);
         this.router.get("/info/:foodId").handler(this::dishFoodInfo);
         this.router.post("/add").handler(this::addDishFood);
         this.router.post("/edit").handler(this::editDishFood);
@@ -49,17 +49,17 @@ public final class DishRouter extends ApiRouter {
      */
     private void dishListPage(RoutingContext context){
 
-        String merchantId = context.request().getParam("merchantId");
-        log.info("dishFood list page: {}", merchantId);
+        String orgId = context.request().getParam("orgId");
+        log.info("dishFood list page: {}", orgId);
         String pageNum = context.request().getParam("pageNum");
         String pageSize = context.request().getParam("pageSize");
-        if (StrUtil.isBlank(merchantId)){
+        if (StrUtil.isBlank(orgId)){
             serviceUnavailable(context, CodeEnum.SYS_REQUEST);
         } else {
 
             Integer page = StrUtil.isNumber(pageNum) ? Integer.parseInt(pageNum) : 1;
             Integer size = StrUtil.isNumber(pageSize) ? Integer.parseInt(pageSize) : 10;
-            JsonObject jsonObject = new JsonObject().put("merchantId", merchantId)
+            JsonObject jsonObject = new JsonObject().put("orgId", orgId)
                     .put("dishName", context.request().getParam("dishName"));
             this.dishService.dishListPage(jsonObject, page, size, resultHandlerNonEmpty(context));
         }
@@ -107,20 +107,20 @@ public final class DishRouter extends ApiRouter {
         JsonObject jsonObject = context.getBodyAsJson();
         log.info("edit dishFood info: {}", jsonObject);
         Long foodId = jsonObject.getLong("foodId");
-        Long merchantId = jsonObject.getLong("merchantId");
+        Long orgId = jsonObject.getLong("orgId");
 
         String dishName = jsonObject.getString("dishName");
         Double dishPrice = jsonObject.getDouble("dishPrice");
         Double dishDiscountPrice = jsonObject.getDouble("dishDiscountPrice");
         String dishIcon = jsonObject.getString("dishIcon");
         String remark = jsonObject.getString("remark");
-        if (Objects.isNull(foodId) || Objects.isNull(merchantId)){
+        if (Objects.isNull(foodId) || Objects.isNull(orgId)){
 
             serviceUnavailable(context, CodeEnum.SYS_REQUEST);
         } else {
             DishFood dishFood = new DishFood();
             dishFood.setId(foodId);
-            dishFood.setMerchantId(merchantId);
+            dishFood.setOrgId(orgId);
             dishFood.setDishName(dishName);
             dishFood.setDishPrice(new BigDecimal(dishPrice));
             dishFood.setDishDiscountPrice(new BigDecimal(dishDiscountPrice));

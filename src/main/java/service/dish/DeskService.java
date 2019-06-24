@@ -130,7 +130,6 @@ public class DeskService extends JdbcRepositoryWrapper {
         sb.append(" update_time = ? where id = ?");
         jsonArray.add(new Date().toInstant()).add(desk.getId());
         log.info("update desk info: {}", jsonArray);
-        log.info("update desk sql: {}", sb);
 
         if (Objects.nonNull(desk.getDeskNum())) {
             JsonArray params = new JsonArray().add(desk.getOrgId()).add(desk.getDeskNum());

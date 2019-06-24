@@ -21,7 +21,7 @@ public class DishFood implements Serializable {
 
     private Long id;
 
-    private Long org;
+    private Long orgId;
 
     private String dishName;
 

@@ -28,17 +28,17 @@ import web.ApiRouter;
 @Slf4j
 public class DishService extends JdbcRepositoryWrapper {
 
-    private static final String BASE = "id , merchant_id merchantId, dish_name dishName, dish_price dishPrice, dish_discount_price dishDiscountPrice," +
+    private static final String BASE = "id , org_id orgId, dish_name dishName, dish_price dishPrice, dish_discount_price dishDiscountPrice," +
             " dish_icon dishIcon, dish_is_takeout dishTakeout, remark, dish_status dishStatus, DATE_FORMAT(update_time,'%Y-%m-%d %H:%i:%s') updateTime";
 
     private static final String QUERY_ALL_PAGE = "SELECT "+ BASE +" FROM dish_food ";
 
     private static final String QUERY_DISH_ID = "SELECT "+ BASE +" FROM dish_food where id = ?";
 
-    private static final String QUERY_DISH_NAME = "SELECT "+ BASE +" FROM dish_food where merchant_id = ? and dish_name = ?";
+    private static final String QUERY_DISH_NAME = "SELECT "+ BASE +" FROM dish_food where org_id = ? and dish_name = ?";
 
     private static final String INSERT_DISH = "INSERT INTO dish_food " +
-            "(merchant_id, dish_name, dish_price, dish_discount_price, dish_icon, dish_is_takeout, remark, dish_status, create_time, update_time) " +
+            "(org_id, dish_name, dish_price, dish_discount_price, dish_icon, dish_is_takeout, remark, dish_status, create_time, update_time) " +
             "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     private static final String UPDATE_DISH = "UPDATE dish_food SET ";
@@ -62,7 +62,7 @@ public class DishService extends JdbcRepositoryWrapper {
     public void dishListPage(JsonObject params, int page, int size, Handler<AsyncResult<List<JsonObject>>> resultHandler){
 
         log.info("start dish list params: {}", params);
-        JsonArray jsonArray = new JsonArray().add(params.getString("merchantId"));
+        JsonArray jsonArray = new JsonArray().add(params.getString("orgId"));
         StringBuffer sb = new StringBuffer(QUERY_ALL_PAGE);
         if (StrUtil.isNotBlank(params.getString("dishName"))){
             sb.append(" and dish_name = ?");
@@ -102,7 +102,7 @@ public class DishService extends JdbcRepositoryWrapper {
         food.setUpdateTime(now);
         JsonArray jsonArray = DishFoodConverter.toJsonArray(food);
         log.info("insert food info: {}", jsonArray);
-        JsonArray params = new JsonArray().add(food.getMerchantId()).add(food.getDishName());
+        JsonArray params = new JsonArray().add(food.getOrgId()).add(food.getDishName());
         retrieveOne(params, QUERY_DISH_NAME)
                 .setHandler(d -> {
                     if (d.succeeded()){
@@ -151,10 +151,9 @@ public class DishService extends JdbcRepositoryWrapper {
         sb.append(" update_time = ? where id = ?");
         jsonArray.add(new Date().toInstant()).add(food.getId());
         log.info("update dish food info: {}", jsonArray);
-        log.info("update dish food sql: {}", sb);
 
         if (Objects.nonNull(food.getDishName())) {
-            JsonArray params = new JsonArray().add(food.getMerchantId()).add(food.getDishName());
+            JsonArray params = new JsonArray().add(food.getOrgId()).add(food.getDishName());
             retrieveOne(params, QUERY_DISH_NAME)
                     .setHandler(d -> {
                         if (d.succeeded()) {

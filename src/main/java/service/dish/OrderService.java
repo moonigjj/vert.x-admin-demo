@@ -21,7 +21,7 @@ import utils.StrUtil;
 @Slf4j
 public class OrderService extends JdbcRepositoryWrapper {
 
-    private static final String BASE = "id , merchant_id merchantId, order_num orderNum, user_id userId, desk_num deskNum, " +
+    private static final String BASE = "id , org_id orgId, order_num orderNum, user_id userId, desk_num deskNum, " +
             "buyer_name buyerName, dish_amount amount, dish_price price, pay_status payStatus, DATE_FORMAT(create_time,'%Y-%m-%d %H:%i:%s') createTime";
 
     private static final String QUERY_ALL_PAGE = "SELECT "+ BASE +" FROM dish_order ";
@@ -39,7 +39,7 @@ public class OrderService extends JdbcRepositoryWrapper {
     public void orderListPage(JsonObject params, int page, int size, Handler<AsyncResult<List<JsonObject>>> resultHandler){
 
         log.info("start dish list params: {}", params);
-        JsonArray jsonArray = new JsonArray().add(params.getString("merchantId"));
+        JsonArray jsonArray = new JsonArray().add(params.getString("orgId"));
         StringBuffer sb = new StringBuffer(QUERY_ALL_PAGE);
         if (StrUtil.isNotBlank(params.getString("orderNum"))){
             sb.append(" and orderNum = ?");

@@ -47,10 +47,12 @@ public class AdminClientServer extends AbstractVerticle {
                         .allowedHeaders(CommonUtil.getAllowedHeaders())
                         .allowedMethods(CommonUtil.getAllowedMethods()));
 
+        // dish
         router.mountSubRouter("/desk", DeskRouter.create());
         router.mountSubRouter("/dish", DishRouter.create());
         router.mountSubRouter("/order", OrderRouter.create());
 
+        // system
         router.mountSubRouter("/dept", DeptRouter.create());
         router.mountSubRouter("/menu", MenuRouter.create());
         router.mountSubRouter("/operation", OperationRouter.create());

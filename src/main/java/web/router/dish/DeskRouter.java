@@ -32,7 +32,7 @@ public final class DeskRouter extends ApiRouter {
 
     private DeskRouter(){
 
-        this.router.get("/list/:merchantId").handler(this::deskListPage);
+        this.router.get("/list/:orgId").handler(this::deskListPage);
         this.router.get("/info/:deskId").handler(this::deskInfo);
         this.router.post("/add").handler(this::addDesk);
         this.router.post("/edit").handler(this::editDesk);
@@ -46,17 +46,17 @@ public final class DeskRouter extends ApiRouter {
      * @param context
      */
     private void deskListPage(RoutingContext context){
-        String merchantId = context.request().getParam("merchantId");
-        log.info("desk list page: {}", merchantId);
+        String orgId = context.request().getParam("orgId");
+        log.info("desk list page: {}", orgId);
         String pageNum = context.request().getParam("pageNum");
         String pageSize = context.request().getParam("pageSize");
-        if (StrUtil.isBlank(merchantId)){
+        if (StrUtil.isBlank(orgId)){
             serviceUnavailable(context, CodeEnum.SYS_REQUEST);
         } else {
 
             Integer page = StrUtil.isNumber(pageNum) ? Integer.parseInt(pageNum) : 1;
             Integer size = StrUtil.isNumber(pageSize) ? Integer.parseInt(pageSize) : 10;
-            JsonObject jsonObject = new JsonObject().put("merchantId", merchantId)
+            JsonObject jsonObject = new JsonObject().put("orgId", orgId)
                     .put("deskNum", context.request().getParam("deskNum"));
             this.deskService.deskListPage(jsonObject, page, size, resultHandlerNonEmpty(context));
         }
@@ -71,9 +71,9 @@ public final class DeskRouter extends ApiRouter {
         JsonObject jsonObject = context.getBodyAsJson();
         log.info("add desk info:{}", jsonObject);
 
-        Long merchantId = jsonObject.getLong("merchantId");
+        Long orgId = jsonObject.getLong("orgId");
         String deskNum = jsonObject.getString("deskNum");
-        if (Objects.isNull(merchantId) || StrUtil.isBlank(deskNum)){
+        if (Objects.isNull(orgId) || StrUtil.isBlank(deskNum)){
 
             serviceUnavailable(context, CodeEnum.SYS_REQUEST);
         } else {
@@ -106,18 +106,18 @@ public final class DeskRouter extends ApiRouter {
         JsonObject jsonObject = context.getBodyAsJson();
         log.info("edit desk info: {}", jsonObject);
         Long deskId = jsonObject.getLong("deskId");
-        Long merchantId = jsonObject.getLong("merchantId");
+        Long orgId = jsonObject.getLong("orgId");
 
         String deskNum = jsonObject.getString("deskNum");
         String url = jsonObject.getString("url");
         String remark = jsonObject.getString("remark");
-        if (Objects.isNull(deskId) || Objects.isNull(merchantId)){
+        if (Objects.isNull(deskId) || Objects.isNull(orgId)){
 
             serviceUnavailable(context, CodeEnum.SYS_REQUEST);
         } else {
             Desk desk = new Desk();
             desk.setId(deskId);
-            desk.setMerchantId(merchantId);
+            desk.setOrgId(orgId);
             desk.setDeskNum(deskNum);
             desk.setUrl(url);
             desk.setRemark(remark);

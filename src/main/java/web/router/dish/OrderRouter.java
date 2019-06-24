@@ -28,7 +28,7 @@ public final class OrderRouter extends ApiRouter {
 
     private OrderRouter(){
 
-        this.router.get("/list/:merchantId").handler(this::orderListPage);
+        this.router.get("/list/:orgId").handler(this::orderListPage);
         this.router.get("/info/:orderId").handler(this::dishFoodInfo);
 
         this.orderService = new OrderService();
@@ -40,17 +40,17 @@ public final class OrderRouter extends ApiRouter {
      */
     private void orderListPage(RoutingContext context){
 
-        String merchantId = context.request().getParam("merchantId");
-        log.info("order list page: {}", merchantId);
+        String orgId = context.request().getParam("orgId");
+        log.info("order list page: {}", orgId);
         String pageNum = context.request().getParam("pageNum");
         String pageSize = context.request().getParam("pageSize");
-        if (StrUtil.isBlank(merchantId)){
+        if (StrUtil.isBlank(orgId)){
             serviceUnavailable(context, CodeEnum.SYS_REQUEST);
         } else {
 
             Integer page = StrUtil.isNumber(pageNum) ? Integer.parseInt(pageNum) : 1;
             Integer size = StrUtil.isNumber(pageSize) ? Integer.parseInt(pageSize) : 10;
-            JsonObject jsonObject = new JsonObject().put("merchantId", merchantId)
+            JsonObject jsonObject = new JsonObject().put("orgId", orgId)
                     .put("orderNum", context.request().getParam("orderNum"));
             this.orderService.orderListPage(jsonObject, page, size, resultHandlerNonEmpty(context));
         }
