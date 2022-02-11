@@ -16,7 +16,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <java.version>1.8</java.version>
-    <vertx.version>3.6.2</vertx.version>
+    <vertx.version>3.9.4</vertx.version>
     <weixin-java-tools.version>3.4.0</weixin-java-tools.version>
   </properties>
 
